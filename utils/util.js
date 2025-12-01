@@ -27,9 +27,9 @@ const getDistance = (lat1, lng1, lat2, lng2) => {
  */
 const formatDistance = (meters) => {
   if (meters < 1000) {
-    return Math.round(meters) + 'm';
+    return Math.round(meters) + '米';
   }
-  return (meters / 1000).toFixed(1) + 'km';
+  return (meters / 1000).toFixed(1) + '公里';
 };
 
 /**

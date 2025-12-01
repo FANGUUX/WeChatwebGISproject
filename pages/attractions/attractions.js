@@ -1,5 +1,6 @@
 // pages/attractions/attractions.js - 景点列表逻辑
 const app = getApp();
+const util = require('../../utils/util.js');
 
 Page({
   data: {
@@ -58,7 +59,7 @@ Page({
     
     const { latitude, longitude } = this.data.userLocation;
     const attractions = this.data.attractions.map(item => {
-      const distance = this.getDistance(
+      const distance = util.getDistance(
         latitude, longitude,
         item.latitude, item.longitude
       );
@@ -69,27 +70,6 @@ Page({
       attractions,
       filteredAttractions: this.filterAttractions(attractions)
     });
-  },
-
-  // 计算两点间距离（单位：米）
-  getDistance(lat1, lng1, lat2, lng2) {
-    const rad = Math.PI / 180;
-    const R = 6371000; // 地球半径（米）
-    const dLat = (lat2 - lat1) * rad;
-    const dLng = (lng2 - lng1) * rad;
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(lat1 * rad) * Math.cos(lat2 * rad) *
-              Math.sin(dLng / 2) * Math.sin(dLng / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  },
-
-  // 格式化距离显示
-  formatDistance(distance) {
-    if (distance < 1000) {
-      return Math.round(distance) + 'm';
-    }
-    return (distance / 1000).toFixed(1) + 'km';
   },
 
   // 搜索输入

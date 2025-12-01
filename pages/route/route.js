@@ -1,5 +1,6 @@
 // pages/route/route.js - 路线规划逻辑
 const app = getApp();
+const util = require('../../utils/util.js');
 
 Page({
   data: {
@@ -147,7 +148,7 @@ Page({
     const { startLocation, endLocation, currentMode } = this.data;
     
     // 模拟路线数据（实际项目中需调用地图服务API）
-    const distance = this.calculateDistance(
+    const distance = util.getDistance(
       startLocation.latitude, startLocation.longitude,
       endLocation.latitude, endLocation.longitude
     );
@@ -155,21 +156,21 @@ Page({
     // 根据出行方式估算时间
     const routeInfo = {
       walking: {
-        distance: this.formatDistance(distance),
-        duration: this.formatDuration(distance / 80) // 步行速度约80米/分钟
+        distance: util.formatDistance(distance),
+        duration: util.formatDuration(distance / 80) // 步行速度约80米/分钟
       },
       driving: {
-        distance: this.formatDistance(distance * 1.3), // 实际路程约为直线距离的1.3倍
-        duration: this.formatDuration(distance * 1.3 / 500), // 驾车速度约500米/分钟
+        distance: util.formatDistance(distance * 1.3), // 实际路程约为直线距离的1.3倍
+        duration: util.formatDuration(distance * 1.3 / 500), // 驾车速度约500米/分钟
         trafficLights: Math.floor(distance / 1000)
       },
       transit: {
-        distance: this.formatDistance(distance * 1.5),
-        duration: this.formatDuration(distance * 1.5 / 300) // 公交速度约300米/分钟
+        distance: util.formatDistance(distance * 1.5),
+        duration: util.formatDuration(distance * 1.5 / 300) // 公交速度约300米/分钟
       },
       bicycling: {
-        distance: this.formatDistance(distance * 1.2),
-        duration: this.formatDuration(distance * 1.2 / 200) // 骑行速度约200米/分钟
+        distance: util.formatDistance(distance * 1.2),
+        duration: util.formatDuration(distance * 1.2 / 200) // 骑行速度约200米/分钟
       }
     };
 
@@ -185,37 +186,6 @@ Page({
       polyline,
       routeSteps
     });
-  },
-
-  // 计算两点间直线距离（米）
-  calculateDistance(lat1, lng1, lat2, lng2) {
-    const rad = Math.PI / 180;
-    const R = 6371000;
-    const dLat = (lat2 - lat1) * rad;
-    const dLng = (lng2 - lng1) * rad;
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(lat1 * rad) * Math.cos(lat2 * rad) *
-              Math.sin(dLng / 2) * Math.sin(dLng / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  },
-
-  // 格式化距离
-  formatDistance(meters) {
-    if (meters < 1000) {
-      return Math.round(meters) + '米';
-    }
-    return (meters / 1000).toFixed(1) + '公里';
-  },
-
-  // 格式化时间
-  formatDuration(minutes) {
-    if (minutes < 60) {
-      return Math.round(minutes) + '分钟';
-    }
-    const hours = Math.floor(minutes / 60);
-    const mins = Math.round(minutes % 60);
-    return hours + '小时' + (mins > 0 ? mins + '分钟' : '');
   },
 
   // 生成路线（简化版）
