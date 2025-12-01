@@ -1,0 +1,42 @@
+<!--
+  User Center Page
+  用户中心页面
+-->
+<view class="container">
+  <!-- User Header -->
+  <view class="user-header">
+    <view class="user-info" wx:if="{{isLoggedIn}}">
+      <image class="user-avatar" src="{{userInfo.avatar || '/assets/default-avatar.png'}}" mode="aspectFill"></image>
+      <view class="user-details">
+        <text class="user-name">{{userInfo.nickname || '用户'}}</text>
+        <text class="user-phone" wx:if="{{userInfo.phone}}">{{userInfo.phone}}</text>
+      </view>
+    </view>
+    <view class="login-prompt" wx:else bindtap="onLoginTap">
+      <image class="default-avatar" src="/assets/default-avatar.png" mode="aspectFill"></image>
+      <text class="login-text">点击登录</text>
+    </view>
+  </view>
+
+  <!-- Menu List -->
+  <view class="menu-list">
+    <view 
+      class="menu-item" 
+      wx:for="{{menuItems}}" 
+      wx:key="id"
+      data-url="{{item.url}}"
+      bindtap="onMenuTap"
+    >
+      <view class="menu-left">
+        <text class="menu-icon">{{item.icon}}</text>
+        <text class="menu-name">{{item.name}}</text>
+      </view>
+      <text class="menu-arrow">></text>
+    </view>
+  </view>
+
+  <!-- Logout Button -->
+  <view class="logout-section" wx:if="{{isLoggedIn}}">
+    <button class="logout-btn" bindtap="onLogout">退出登录</button>
+  </view>
+</view>

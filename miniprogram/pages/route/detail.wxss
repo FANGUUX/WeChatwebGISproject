@@ -1,0 +1,223 @@
+/* Route Detail Page Styles */
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 140rpx;
+}
+
+/* Map */
+.route-map {
+  width: 100%;
+  height: 400rpx;
+}
+
+/* Route Info */
+.route-info {
+  background-color: #fff;
+  padding: 24rpx;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-around;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+
+.info-value {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Waypoints Section */
+.waypoints-section {
+  background-color: #fff;
+  margin-top: 20rpx;
+  padding: 24rpx;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.section-actions {
+  display: flex;
+}
+
+.action-btn {
+  font-size: 24rpx;
+  color: #1aad19;
+  padding: 8rpx 16rpx;
+  margin-left: 16rpx;
+}
+
+/* Waypoints List */
+.waypoints-list {
+  padding-left: 20rpx;
+}
+
+.waypoint-item {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  padding-bottom: 40rpx;
+}
+
+.waypoint-number {
+  width: 48rpx;
+  height: 48rpx;
+  background-color: #1aad19;
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.waypoint-content {
+  flex: 1;
+  margin-left: 20rpx;
+}
+
+.waypoint-name {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+  display: block;
+}
+
+.waypoint-type {
+  font-size: 22rpx;
+  color: #999;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.waypoint-duration {
+  font-size: 22rpx;
+  color: #666;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.waypoint-actions {
+  padding: 8rpx;
+}
+
+.remove-btn {
+  color: #ff4d4f;
+  font-size: 28rpx;
+}
+
+/* Segment Info */
+.segment-info {
+  position: absolute;
+  left: 23rpx;
+  top: 60rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 60rpx;
+}
+
+.segment-line {
+  width: 2rpx;
+  height: 100%;
+  background-color: #ddd;
+}
+
+.segment-distance, .segment-duration {
+  font-size: 20rpx;
+  color: #999;
+  position: absolute;
+  left: 30rpx;
+  white-space: nowrap;
+}
+
+.segment-distance {
+  top: 0;
+}
+
+.segment-duration {
+  top: 24rpx;
+}
+
+/* Empty Waypoints */
+.empty-waypoints {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx;
+  background-color: #fff;
+  margin-top: 20rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 30rpx;
+}
+
+.add-btn {
+  background-color: #1aad19;
+  color: #fff;
+  font-size: 28rpx;
+  padding: 16rpx 48rpx;
+  border-radius: 32rpx;
+}
+
+/* Bottom Actions */
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx;
+  background-color: #fff;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.nav-btn {
+  background-color: #1aad19;
+  color: #fff;
+  font-size: 32rpx;
+  padding: 24rpx;
+  border-radius: 48rpx;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #999;
+}

@@ -1,0 +1,81 @@
+<!--
+  Food Discovery Page
+  美食发现页面
+-->
+<view class="container">
+  <!-- Search Bar -->
+  <view class="search-bar">
+    <input 
+      class="search-input"
+      placeholder="搜索美食..."
+      value="{{keyword}}"
+      bindinput="onSearchInput"
+      bindconfirm="onSearch"
+    />
+    <view class="search-btn" bindtap="onSearch">搜索</view>
+  </view>
+
+  <!-- Cuisines Filter -->
+  <scroll-view class="cuisines-scroll" scroll-x>
+    <view class="cuisines">
+      <view 
+        class="cuisine-item {{selectedCuisine === '' ? 'active' : ''}}"
+        data-id=""
+        bindtap="onCuisineSelect"
+      >
+        <text class="cuisine-icon">🍽️</text>
+        <text class="cuisine-name">全部</text>
+      </view>
+      <view 
+        class="cuisine-item {{selectedCuisine === item.id ? 'active' : ''}}"
+        wx:for="{{cuisines}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onCuisineSelect"
+      >
+        <text class="cuisine-icon">{{item.icon}}</text>
+        <text class="cuisine-name">{{item.name}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Restaurant List -->
+  <view class="restaurant-list" wx:if="{{restaurants.length}}">
+    <view 
+      class="restaurant-card"
+      wx:for="{{restaurants}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onRestaurantTap"
+    >
+      <image class="restaurant-image" src="{{item.coverImage || '/assets/default-food.png'}}" mode="aspectFill"></image>
+      <view class="restaurant-content">
+        <text class="restaurant-name">{{item.name}}</text>
+        <view class="restaurant-meta">
+          <text class="restaurant-cuisine">{{item.cuisine === 'chinese' ? '中餐' : item.cuisine === 'western' ? '西餐' : item.cuisine === 'japanese' ? '日料' : item.cuisine === 'korean' ? '韩餐' : item.cuisine}}</text>
+          <text class="restaurant-price">¥{{item.priceRange.average || 50}}/人</text>
+        </view>
+        <view class="restaurant-info">
+          <text class="restaurant-rating">⭐ {{item.rating.average || '暂无'}}</text>
+          <text class="restaurant-distance">{{item.formattedDistance}}</text>
+        </view>
+        <view class="restaurant-features" wx:if="{{item.features}}">
+          <text class="feature" wx:if="{{item.features.hasParking}}">🅿️ 停车</text>
+          <text class="feature" wx:if="{{item.features.hasWifi}}">📶 WiFi</text>
+          <text class="feature" wx:if="{{item.features.acceptsReservation}}">📞 可预订</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Empty State -->
+  <view class="empty" wx:if="{{!loading && restaurants.length === 0}}">
+    <text class="empty-icon">🍽️</text>
+    <text class="empty-text">暂无推荐</text>
+  </view>
+
+  <!-- Loading -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

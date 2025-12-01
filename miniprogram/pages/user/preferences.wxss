@@ -1,0 +1,121 @@
+/* Preferences Page Styles */
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20rpx;
+}
+
+.section {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+/* Tag List */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -8rpx;
+}
+
+.tag {
+  padding: 16rpx 32rpx;
+  margin: 8rpx;
+  font-size: 26rpx;
+  color: #666;
+  background-color: #f5f5f5;
+  border-radius: 32rpx;
+  border: 1rpx solid transparent;
+}
+
+.tag.active {
+  color: #1aad19;
+  background-color: rgba(26, 173, 25, 0.1);
+  border-color: #1aad19;
+}
+
+/* Transport List */
+.transport-list {
+  display: flex;
+  justify-content: space-between;
+}
+
+.transport-item {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx;
+  margin: 0 8rpx;
+  font-size: 28rpx;
+  color: #666;
+  background-color: #f5f5f5;
+  border-radius: 8rpx;
+  border: 1rpx solid transparent;
+}
+
+.transport-item:first-child {
+  margin-left: 0;
+}
+
+.transport-item:last-child {
+  margin-right: 0;
+}
+
+.transport-item.active {
+  color: #1aad19;
+  background-color: rgba(26, 173, 25, 0.1);
+  border-color: #1aad19;
+}
+
+/* Price Range */
+.price-range {
+  display: flex;
+  align-items: center;
+}
+
+.price-input {
+  flex: 1;
+  padding: 16rpx 24rpx;
+  font-size: 28rpx;
+  background-color: #f5f5f5;
+  border-radius: 8rpx;
+  text-align: center;
+}
+
+.price-sep {
+  padding: 0 20rpx;
+  color: #999;
+}
+
+/* Switch Row */
+.switch-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.switch-label {
+  font-size: 30rpx;
+  color: #333;
+}
+
+/* Save Section */
+.save-section {
+  padding: 40rpx 0;
+}
+
+.save-btn {
+  background-color: #1aad19;
+  color: #fff;
+  font-size: 32rpx;
+  padding: 24rpx 0;
+  border-radius: 48rpx;
+}

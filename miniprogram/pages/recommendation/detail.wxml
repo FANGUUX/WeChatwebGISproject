@@ -1,0 +1,104 @@
+<!--
+  Attraction Detail Page
+  景点详情页面
+-->
+<view class="container" wx:if="{{attraction}}">
+  <!-- Cover Image -->
+  <swiper class="cover-swiper" indicator-dots="{{attraction.images.length > 1}}" autoplay>
+    <swiper-item wx:for="{{attraction.images.length ? attraction.images : [{ url: attraction.coverImage || '/assets/default-attraction.png' }]}}" wx:key="url">
+      <image class="cover-image" src="{{item.url}}" mode="aspectFill"></image>
+    </swiper-item>
+  </swiper>
+
+  <!-- Basic Info -->
+  <view class="info-section">
+    <view class="title-row">
+      <text class="attraction-name">{{attraction.name}}</text>
+      <view class="rating">
+        <text class="rating-star">⭐</text>
+        <text class="rating-value">{{attraction.rating.average || '暂无'}}</text>
+        <text class="rating-count">({{attraction.rating.count}}人评价)</text>
+      </view>
+    </view>
+
+    <view class="tags">
+      <text class="tag category">{{attraction.category === 'nature' ? '自然风光' : attraction.category === 'history' ? '历史古迹' : attraction.category === 'entertainment' ? '休闲娱乐' : attraction.category === 'culture' ? '文化艺术' : attraction.category === 'shopping' ? '购物' : '运动户外'}}</text>
+      <text class="tag" wx:for="{{attraction.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+
+    <view class="location" bindtap="onNavigate">
+      <text class="location-icon">📍</text>
+      <text class="location-text">{{attraction.location.address || '点击导航'}}</text>
+    </view>
+  </view>
+
+  <!-- Price & Hours -->
+  <view class="detail-section">
+    <view class="detail-item">
+      <text class="detail-label">门票价格</text>
+      <view class="detail-content">
+        <text class="price" wx:if="{{attraction.isFree}}">免费</text>
+        <block wx:else>
+          <text class="price">成人票 ¥{{attraction.ticketPrice.adult}}</text>
+          <text class="price" wx:if="{{attraction.ticketPrice.child}}">儿童票 ¥{{attraction.ticketPrice.child}}</text>
+        </block>
+      </view>
+    </view>
+
+    <view class="detail-item">
+      <text class="detail-label">建议游玩</text>
+      <text class="detail-value">{{attraction.recommendedDuration}}分钟</text>
+    </view>
+
+    <view class="detail-item">
+      <text class="detail-label">当前客流</text>
+      <view class="crowd-indicator">
+        <text class="crowd-text">{{attraction.passengerFlow.current}}/{{attraction.passengerFlow.capacity}}</text>
+        <text class="crowd-level">
+          {{attraction.passengerFlow.current / attraction.passengerFlow.capacity < 0.3 ? '空闲' : attraction.passengerFlow.current / attraction.passengerFlow.capacity < 0.6 ? '适中' : attraction.passengerFlow.current / attraction.passengerFlow.capacity < 0.8 ? '较多' : '拥挤'}}
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Description -->
+  <view class="desc-section">
+    <text class="section-title">景点介绍</text>
+    <text class="description">{{attraction.description || '暂无介绍'}}</text>
+  </view>
+
+  <!-- Opening Hours -->
+  <view class="hours-section">
+    <text class="section-title">开放时间</text>
+    <view class="hours-list">
+      <view class="hours-item">
+        <text class="day">周一至周五</text>
+        <text class="time">{{attraction.openingHours.monday.open || '09:00'}} - {{attraction.openingHours.monday.close || '18:00'}}</text>
+      </view>
+      <view class="hours-item">
+        <text class="day">周六至周日</text>
+        <text class="time">{{attraction.openingHours.saturday.open || '08:00'}} - {{attraction.openingHours.saturday.close || '20:00'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Bottom Actions -->
+  <view class="bottom-actions">
+    <view class="action-btn secondary" bindtap="onCall">
+      <text class="btn-icon">📞</text>
+      <text>电话</text>
+    </view>
+    <view class="action-btn secondary" bindtap="onNavigate">
+      <text class="btn-icon">🗺️</text>
+      <text>导航</text>
+    </view>
+    <view class="action-btn primary" bindtap="onAddToRoute">
+      <text>加入路线</text>
+    </view>
+  </view>
+</view>
+
+<!-- Loading -->
+<view class="loading" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>

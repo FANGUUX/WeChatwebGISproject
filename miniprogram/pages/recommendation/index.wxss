@@ -1,0 +1,152 @@
+/* Recommendation List Page Styles */
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 20rpx;
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex;
+  padding: 20rpx;
+  background-color: #fff;
+}
+
+.search-input {
+  flex: 1;
+  padding: 16rpx 24rpx;
+  font-size: 28rpx;
+  background-color: #f5f5f5;
+  border-radius: 32rpx;
+}
+
+.search-btn {
+  padding: 16rpx 32rpx;
+  margin-left: 20rpx;
+  font-size: 28rpx;
+  color: #fff;
+  background-color: #1aad19;
+  border-radius: 32rpx;
+}
+
+/* Category Title */
+.category-title {
+  padding: 20rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  background-color: #fff;
+  margin-top: 20rpx;
+}
+
+/* List */
+.list {
+  padding: 0 20rpx;
+}
+
+.list-item {
+  display: flex;
+  background-color: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  margin-top: 20rpx;
+}
+
+.item-image {
+  width: 240rpx;
+  height: 200rpx;
+  flex-shrink: 0;
+}
+
+.item-content {
+  flex: 1;
+  padding: 16rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.item-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item-rank {
+  font-size: 20rpx;
+  color: #fff;
+  background-color: #ff4d4f;
+  padding: 4rpx 12rpx;
+  border-radius: 6rpx;
+  margin-left: 10rpx;
+}
+
+.item-category {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.item-info {
+  display: flex;
+  align-items: center;
+  margin-top: 8rpx;
+}
+
+.item-rating {
+  font-size: 24rpx;
+  color: #faad14;
+  margin-right: 20rpx;
+}
+
+.item-crowd {
+  font-size: 22rpx;
+  color: #52c41a;
+  padding: 4rpx 12rpx;
+  background-color: rgba(82, 196, 26, 0.1);
+  border-radius: 4rpx;
+}
+
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8rpx;
+}
+
+.item-price {
+  font-size: 28rpx;
+  color: #ff4d4f;
+  font-weight: bold;
+}
+
+.item-duration {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* Empty State */
+.empty {
+  text-align: center;
+  padding: 60rpx;
+  color: #999;
+}
+
+/* Loading */
+.loading-more, .no-more {
+  text-align: center;
+  padding: 30rpx;
+  color: #999;
+  font-size: 24rpx;
+}

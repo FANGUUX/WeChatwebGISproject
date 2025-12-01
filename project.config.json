@@ -1,0 +1,15 @@
+{
+  "projectname": "wechat-webgis",
+  "description": "智慧旅游微信小程序",
+  "appid": "your-app-id",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  },
+  "compileType": "miniprogram",
+  "srcMiniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/"
+}

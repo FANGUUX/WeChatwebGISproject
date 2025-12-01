@@ -1,0 +1,45 @@
+<!--
+  Create Route Page
+  创建路线页面
+-->
+<view class="container">
+  <!-- Name Input -->
+  <view class="section">
+    <text class="section-title">路线名称</text>
+    <input 
+      class="name-input"
+      placeholder="给路线起个名字"
+      value="{{name}}"
+      maxlength="50"
+      bindinput="onNameInput"
+    />
+  </view>
+
+  <!-- Transport Mode -->
+  <view class="section">
+    <text class="section-title">出行方式</text>
+    <view class="transport-list">
+      <view 
+        class="transport-item {{transportMode === item.id ? 'active' : ''}}"
+        wx:for="{{transportModes}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onTransportSelect"
+      >
+        <text class="transport-icon">{{item.icon}}</text>
+        <text class="transport-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Tips -->
+  <view class="tips">
+    <text class="tips-title">提示</text>
+    <text class="tips-content">创建路线后，您可以添加景点和美食地点，系统会自动规划最优路径。</text>
+  </view>
+
+  <!-- Create Button -->
+  <view class="create-section">
+    <button class="create-btn" bindtap="onCreate">创建路线</button>
+  </view>
+</view>

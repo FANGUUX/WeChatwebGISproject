@@ -1,0 +1,44 @@
+<!--
+  Route Navigation Page
+  路线导航页面
+-->
+<view class="container">
+  <!-- Map -->
+  <map 
+    class="nav-map"
+    latitude="{{currentLocation.latitude || (route.waypoints[0].location.coordinates[1])}}"
+    longitude="{{currentLocation.longitude || (route.waypoints[0].location.coordinates[0])}}"
+    scale="{{scale}}"
+    markers="{{markers}}"
+    polyline="{{polyline}}"
+    show-location
+    enable-3D
+    enable-overlooking
+  ></map>
+
+  <!-- Navigation Info Panel -->
+  <view class="nav-panel" wx:if="{{route}}">
+    <view class="current-waypoint">
+      <text class="waypoint-label">下一站</text>
+      <text class="waypoint-name">{{route.waypoints[currentWaypointIndex].name}}</text>
+    </view>
+
+    <view class="progress-info">
+      <text class="progress-text">{{currentWaypointIndex + 1}} / {{route.waypoints.length}}</text>
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{(currentWaypointIndex + 1) / route.waypoints.length * 100}}%"></view>
+      </view>
+    </view>
+
+    <view class="nav-actions">
+      <view class="nav-action-btn" bindtap="onNavigateToWaypoint">
+        <text class="action-icon">🗺️</text>
+        <text class="action-text">打开导航</text>
+      </view>
+      <view class="nav-action-btn exit" bindtap="onExit">
+        <text class="action-icon">✕</text>
+        <text class="action-text">退出</text>
+      </view>
+    </view>
+  </view>
+</view>

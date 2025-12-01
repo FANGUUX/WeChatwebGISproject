@@ -1,0 +1,92 @@
+<!--
+  Route Detail Page
+  路线详情页面
+-->
+<view class="container" wx:if="{{route}}">
+  <!-- Map -->
+  <map 
+    class="route-map"
+    latitude="{{markers[0].latitude || 39.9}}"
+    longitude="{{markers[0].longitude || 116.4}}"
+    markers="{{markers}}"
+    polyline="{{polyline}}"
+    show-location
+  ></map>
+
+  <!-- Route Info -->
+  <view class="route-info">
+    <view class="info-row">
+      <view class="info-item">
+        <text class="info-label">总距离</text>
+        <text class="info-value">{{route.formattedDistance}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">预计时间</text>
+        <text class="info-value">{{route.formattedDuration}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">出行方式</text>
+        <text class="info-value">
+          {{route.transportMode === 'walking' ? '🚶 步行' : route.transportMode === 'cycling' ? '🚲 骑行' : route.transportMode === 'driving' ? '🚗 驾车' : route.transportMode === 'transit' ? '🚌 公交' : '🔄 混合'}}
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Waypoints -->
+  <view class="waypoints-section">
+    <view class="section-header">
+      <text class="section-title">路线详情</text>
+      <view class="section-actions">
+        <view class="action-btn" bindtap="onOptimize">
+          <text>🔄 优化顺序</text>
+        </view>
+        <view class="action-btn" bindtap="onAddPlace">
+          <text>+ 添加地点</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="waypoints-list">
+      <view 
+        class="waypoint-item"
+        wx:for="{{route.waypoints}}"
+        wx:key="order"
+      >
+        <view class="waypoint-number">{{index + 1}}</view>
+        <view class="waypoint-content" data-wp="{{item}}" bindtap="onWaypointTap">
+          <text class="waypoint-name">{{item.name}}</text>
+          <text class="waypoint-type">{{item.placeType === 'Attraction' ? '🏛️ 景点' : '🍽️ 美食'}}</text>
+          <text class="waypoint-duration" wx:if="{{item.duration}}">预计停留 {{item.duration}} 分钟</text>
+        </view>
+        <view class="waypoint-actions" data-waypoint-id="{{item._id}}" catchtap="onRemoveWaypoint">
+          <text class="remove-btn">✕</text>
+        </view>
+        
+        <!-- Segment info -->
+        <view class="segment-info" wx:if="{{index < route.waypoints.length - 1 && route.segments[index]}}">
+          <view class="segment-line"></view>
+          <text class="segment-distance">{{route.segments[index].distance}}米</text>
+          <text class="segment-duration">约{{route.segments[index].duration}}分钟</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Empty Waypoints -->
+  <view class="empty-waypoints" wx:if="{{route.waypoints.length === 0}}">
+    <text class="empty-icon">📍</text>
+    <text class="empty-text">还没有添加地点</text>
+    <button class="add-btn" bindtap="onAddPlace">添加第一个地点</button>
+  </view>
+
+  <!-- Bottom Actions -->
+  <view class="bottom-actions" wx:if="{{route.waypoints.length >= 2}}">
+    <button class="nav-btn" bindtap="onStartNavigation">开始导航</button>
+  </view>
+</view>
+
+<!-- Loading -->
+<view class="loading" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>

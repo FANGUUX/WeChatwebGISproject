@@ -1,0 +1,80 @@
+<!--
+  Profile Page
+  个人资料页面
+-->
+<view class="container">
+  <!-- Avatar -->
+  <view class="avatar-section" bindtap="chooseAvatar">
+    <image class="avatar" src="{{profile.avatar || '/assets/default-avatar.png'}}" mode="aspectFill"></image>
+    <text class="avatar-tip">点击更换头像</text>
+  </view>
+
+  <!-- Form -->
+  <view class="form">
+    <view class="form-item">
+      <text class="form-label">昵称</text>
+      <input 
+        class="form-input" 
+        value="{{profile.nickname}}"
+        placeholder="请输入昵称"
+        maxlength="20"
+        bindinput="onNicknameInput"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">性别</text>
+      <picker 
+        mode="selector" 
+        range="{{genderOptions}}"
+        value="{{profile.gender}}"
+        bindchange="onGenderChange"
+      >
+        <view class="form-picker">
+          <text>{{genderOptions[profile.gender]}}</text>
+          <text class="picker-arrow">></text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">生日</text>
+      <picker 
+        mode="date"
+        value="{{profile.birthday}}"
+        end="{{currentDate}}"
+        bindchange="onBirthdayChange"
+      >
+        <view class="form-picker">
+          <text>{{profile.birthday || '请选择'}}</text>
+          <text class="picker-arrow">></text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">省份</text>
+      <input 
+        class="form-input" 
+        value="{{profile.province}}"
+        placeholder="请输入省份"
+        bindinput="onProvinceInput"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">城市</text>
+      <input 
+        class="form-input" 
+        value="{{profile.city}}"
+        placeholder="请输入城市"
+        bindinput="onCityInput"
+      />
+    </view>
+  </view>
+
+  <!-- Save Button -->
+  <view class="save-section">
+    <button class="save-btn" bindtap="saveProfile">保存</button>
+  </view>
+</view>

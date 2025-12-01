@@ -1,0 +1,176 @@
+/* Route List Page Styles */
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20rpx;
+}
+
+/* Header */
+.header {
+  padding: 20rpx;
+  background-color: #fff3cd;
+  border-radius: 8rpx;
+  margin-bottom: 20rpx;
+}
+
+.header-text {
+  font-size: 28rpx;
+  color: #856404;
+}
+
+/* Create Section */
+.create-section {
+  margin-bottom: 20rpx;
+}
+
+.create-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1aad19;
+  color: #fff;
+  font-size: 30rpx;
+  padding: 24rpx;
+  border-radius: 16rpx;
+}
+
+.create-icon {
+  font-size: 40rpx;
+  margin-right: 12rpx;
+}
+
+/* Route Card */
+.route-card {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.route-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.route-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.route-status {
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 4rpx;
+}
+
+.route-status.draft {
+  color: #666;
+  background-color: #f0f0f0;
+}
+
+.route-status.planned {
+  color: #1890ff;
+  background-color: rgba(24, 144, 255, 0.1);
+}
+
+.route-status.active {
+  color: #52c41a;
+  background-color: rgba(82, 196, 26, 0.1);
+}
+
+.route-status.completed {
+  color: #1aad19;
+  background-color: rgba(26, 173, 25, 0.1);
+}
+
+.route-waypoints {
+  margin-bottom: 16rpx;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+.route-info {
+  display: flex;
+  margin-bottom: 16rpx;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  margin-right: 30rpx;
+}
+
+.info-icon {
+  font-size: 24rpx;
+  margin-right: 6rpx;
+}
+
+.info-value {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.route-transport {
+  display: flex;
+  align-items: center;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.transport-icon {
+  font-size: 32rpx;
+  margin-right: 8rpx;
+}
+
+.transport-name {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.route-actions {
+  position: absolute;
+  right: 24rpx;
+  bottom: 24rpx;
+}
+
+.delete-btn {
+  font-size: 24rpx;
+  color: #ff4d4f;
+  padding: 8rpx 16rpx;
+}
+
+/* Empty State */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 40rpx;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.empty-tip {
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 40rpx;
+  color: #999;
+}
