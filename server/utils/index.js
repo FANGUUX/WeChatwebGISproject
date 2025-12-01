@@ -84,13 +84,27 @@ const paginate = (array, page = 1, limit = 20) => {
 };
 
 /**
- * Sanitize user input
+ * Sanitize user input by removing HTML tags
+ * Uses a loop to ensure complete removal of nested/broken tags
  * @param {string} input - User input
  * @returns {string} Sanitized input
  */
 const sanitizeInput = (input) => {
   if (typeof input !== 'string') return input;
-  return input.trim().replace(/<[^>]*>/g, '');
+  let sanitized = input.trim();
+  let previous;
+  // Loop until no more HTML tags are found
+  do {
+    previous = sanitized;
+    sanitized = sanitized.replace(/<[^>]*>/g, '');
+  } while (sanitized !== previous);
+  // Also encode any remaining HTML entities
+  return sanitized
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 };
 
 /**

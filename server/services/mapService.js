@@ -3,6 +3,7 @@
  * 地图服务 - 第三方地图API集成
  */
 const config = require('../config');
+const { calculateDistance } = require('../utils');
 
 class MapService {
   constructor() {
@@ -130,23 +131,13 @@ class MapService {
 
   /**
    * Calculate distance between two points
+   * Uses the shared utility function
    * @param {Array} coord1 - [longitude, latitude]
    * @param {Array} coord2 - [longitude, latitude]
    * @returns {number} Distance in meters
    */
   calculateDistance(coord1, coord2) {
-    const R = 6371000;
-    const lat1 = coord1[1] * Math.PI / 180;
-    const lat2 = coord2[1] * Math.PI / 180;
-    const deltaLat = (coord2[1] - coord1[1]) * Math.PI / 180;
-    const deltaLng = (coord2[0] - coord1[0]) * Math.PI / 180;
-
-    const a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
-              Math.cos(lat1) * Math.cos(lat2) *
-              Math.sin(deltaLng / 2) * Math.sin(deltaLng / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    return R * c;
+    return calculateDistance(coord1, coord2);
   }
 
   /**

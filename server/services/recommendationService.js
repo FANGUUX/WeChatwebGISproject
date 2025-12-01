@@ -173,7 +173,8 @@ class RecommendationService {
         if (attraction) {
           viewedCategories[attraction.category] = (viewedCategories[attraction.category] || 0) + viewed.viewCount;
         }
-      } catch {
+      } catch (error) {
+        console.error(`Error fetching attraction ${viewed.attractionId}:`, error.message);
         continue;
       }
     }

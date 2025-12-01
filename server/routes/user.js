@@ -6,15 +6,17 @@ const express = require('express');
 const router = express.Router();
 const { authenticate } = require('../middleware/auth');
 const { handleValidationErrors } = require('../middleware/validation');
+const { authLimiter } = require('../middleware/rateLimit');
 const userController = require('../controllers/userController');
 
 // Public routes - 公开路由
 
 // WeChat login
-router.post('/login/wechat', userController.wechatLogin);
+router.post('/login/wechat', authLimiter, userController.wechatLogin);
 
 // Phone register
 router.post('/register',
+  authLimiter,
   userController.registerValidation,
   handleValidationErrors,
   userController.register
@@ -22,6 +24,7 @@ router.post('/register',
 
 // Phone login
 router.post('/login',
+  authLimiter,
   userController.loginValidation,
   handleValidationErrors,
   userController.login

@@ -5,6 +5,7 @@
 const { authenticate, optionalAuth, authorize, checkOwnership } = require('./auth');
 const { handleValidationErrors } = require('./validation');
 const { errorHandler, notFoundHandler } = require('./errorHandler');
+const { generalLimiter, authLimiter, apiLimiter } = require('./rateLimit');
 
 module.exports = {
   authenticate,
@@ -13,5 +14,8 @@ module.exports = {
   checkOwnership,
   handleValidationErrors,
   errorHandler,
-  notFoundHandler
+  notFoundHandler,
+  generalLimiter,
+  authLimiter,
+  apiLimiter
 };

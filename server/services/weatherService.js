@@ -30,8 +30,8 @@ class WeatherService {
       
       // Return mock data for development
       return this.getMockWeather();
-    } catch {
-      console.error('Weather API error');
+    } catch (error) {
+      console.error('Weather API error:', error.message);
       return this.getMockWeather();
     }
   }

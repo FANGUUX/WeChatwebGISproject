@@ -7,7 +7,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const config = require('./config');
 const routes = require('./routes');
-const { errorHandler, notFoundHandler } = require('./middleware');
+const { errorHandler, notFoundHandler, generalLimiter } = require('./middleware');
 
 const app = express();
 
@@ -15,6 +15,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Apply rate limiting to all API routes
+app.use('/api/v1', generalLimiter);
 
 // API Routes
 app.use('/api/v1', routes);
