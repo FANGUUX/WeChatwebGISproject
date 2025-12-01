@@ -1,0 +1,111 @@
+<!--pages/attractions/attractions.wxml - 景点列表页面-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <image class="search-icon" src="/images/search.png"></image>
+      <input 
+        class="search-input" 
+        placeholder="搜索景点名称" 
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearch"
+      />
+      <view class="clear-btn" wx:if="{{searchKeyword}}" bindtap="clearSearch">
+        <text>×</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分类筛选 -->
+  <scroll-view class="category-scroll" scroll-x="{{true}}">
+    <view 
+      class="category-item {{currentCategory === '' ? 'active' : ''}}" 
+      bindtap="selectCategory" 
+      data-category=""
+    >
+      全部
+    </view>
+    <view 
+      class="category-item {{currentCategory === item ? 'active' : ''}}" 
+      wx:for="{{categories}}" 
+      wx:key="*this"
+      bindtap="selectCategory" 
+      data-category="{{item}}"
+    >
+      {{item}}
+    </view>
+  </scroll-view>
+
+  <!-- 排序选项 -->
+  <view class="sort-bar">
+    <view 
+      class="sort-item {{sortType === 'rating' ? 'active' : ''}}" 
+      bindtap="sortByRating"
+    >
+      <text>评分</text>
+      <text class="sort-arrow" wx:if="{{sortType === 'rating'}}">{{sortOrder === 'desc' ? '↓' : '↑'}}</text>
+    </view>
+    <view 
+      class="sort-item {{sortType === 'distance' ? 'active' : ''}}" 
+      bindtap="sortByDistance"
+    >
+      <text>距离</text>
+      <text class="sort-arrow" wx:if="{{sortType === 'distance'}}">{{sortOrder === 'desc' ? '↓' : '↑'}}</text>
+    </view>
+  </view>
+
+  <!-- 景点列表 -->
+  <scroll-view class="attraction-list" scroll-y="{{true}}" bindscrolltolower="loadMore">
+    <view 
+      class="list-item" 
+      wx:for="{{filteredAttractions}}" 
+      wx:key="id"
+      bindtap="goToDetail"
+      data-id="{{item.id}}"
+    >
+      <view class="item-image">
+        <image src="{{item.image}}" mode="aspectFill" class="item-img"></image>
+        <view class="item-category">{{item.category}}</view>
+      </view>
+      <view class="item-content">
+        <view class="item-header">
+          <view class="item-name">{{item.name}}</view>
+          <view class="item-rating">
+            <text class="star">★</text>
+            <text class="rating-value">{{item.rating}}</text>
+          </view>
+        </view>
+        <view class="item-address">
+          <text class="address-icon">📍</text>
+          <text class="address-text">{{item.address}}</text>
+        </view>
+        <view class="item-info">
+          <view class="info-item">
+            <text class="info-icon">🕐</text>
+            <text class="info-text">{{item.openTime}}</text>
+          </view>
+          <view class="info-item">
+            <text class="info-icon">🎫</text>
+            <text class="info-text">{{item.ticket}}</text>
+          </view>
+        </view>
+        <view class="item-desc ellipsis-2">{{item.description}}</view>
+        <view class="item-actions">
+          <view class="action-btn detail-btn" catchtap="goToDetail" data-id="{{item.id}}">
+            <text>查看详情</text>
+          </view>
+          <view class="action-btn route-btn" catchtap="planRoute" data-id="{{item.id}}">
+            <text>🧭 路线规划</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{filteredAttractions.length === 0}}">
+      <text class="empty-icon">🔍</text>
+      <text class="empty-text">暂无符合条件的景点</text>
+    </view>
+  </scroll-view>
+</view>

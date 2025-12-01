@@ -1,0 +1,118 @@
+<!--pages/detail/detail.wxml - 景点详情页面-->
+<view class="container">
+  <!-- 头部图片 -->
+  <view class="header-image">
+    <image src="{{attraction.image}}" mode="aspectFill" class="cover-image"></image>
+    <view class="header-overlay">
+      <view class="header-content">
+        <view class="attraction-name">{{attraction.name}}</view>
+        <view class="attraction-category">{{attraction.category}}</view>
+      </view>
+    </view>
+    <view class="back-btn" bindtap="goBack">
+      <text>←</text>
+    </view>
+  </view>
+
+  <!-- 详情内容 -->
+  <scroll-view class="content-scroll" scroll-y="{{true}}">
+    <!-- 基本信息卡片 -->
+    <view class="info-card">
+      <view class="card-header">
+        <view class="rating-box">
+          <text class="rating-star">★</text>
+          <text class="rating-value">{{attraction.rating}}</text>
+          <text class="rating-label">评分</text>
+        </view>
+      </view>
+      
+      <view class="info-list">
+        <view class="info-item">
+          <text class="info-icon">📍</text>
+          <view class="info-content">
+            <text class="info-label">地址</text>
+            <text class="info-value">{{attraction.address}}</text>
+          </view>
+        </view>
+        <view class="info-item">
+          <text class="info-icon">🕐</text>
+          <view class="info-content">
+            <text class="info-label">开放时间</text>
+            <text class="info-value">{{attraction.openTime}}</text>
+          </view>
+        </view>
+        <view class="info-item">
+          <text class="info-icon">🎫</text>
+          <view class="info-content">
+            <text class="info-label">门票价格</text>
+            <text class="info-value">{{attraction.ticket}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 景点介绍 -->
+    <view class="desc-card">
+      <view class="section-title">景点介绍</view>
+      <view class="desc-content">{{attraction.description}}</view>
+    </view>
+
+    <!-- 位置地图 -->
+    <view class="map-card">
+      <view class="section-title">位置信息</view>
+      <map
+        id="detailMap"
+        class="detail-map"
+        latitude="{{attraction.latitude}}"
+        longitude="{{attraction.longitude}}"
+        scale="15"
+        markers="{{markers}}"
+        show-location="{{true}}"
+      ></map>
+    </view>
+
+    <!-- 推荐景点 -->
+    <view class="recommend-card" wx:if="{{recommendedAttractions.length > 0}}">
+      <view class="section-title">附近推荐</view>
+      <scroll-view class="recommend-scroll" scroll-x="{{true}}">
+        <view 
+          class="recommend-item" 
+          wx:for="{{recommendedAttractions}}" 
+          wx:key="id"
+          bindtap="goToOtherDetail"
+          data-id="{{item.id}}"
+        >
+          <image src="{{item.image}}" mode="aspectFill" class="recommend-img"></image>
+          <view class="recommend-name">{{item.name}}</view>
+          <view class="recommend-rating">
+            <text class="star">★</text>
+            <text>{{item.rating}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 底部占位 -->
+    <view class="bottom-placeholder"></view>
+  </scroll-view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="bar-btn favorite-btn" bindtap="toggleFavorite">
+      <text class="btn-icon">{{isFavorite ? '❤️' : '🤍'}}</text>
+      <text class="btn-text">{{isFavorite ? '已收藏' : '收藏'}}</text>
+    </view>
+    <view class="bar-btn share-btn" bindtap="shareAttraction">
+      <text class="btn-icon">📤</text>
+      <text class="btn-text">分享</text>
+    </view>
+    <view class="bar-btn primary-btn" bindtap="planRoute">
+      <text class="btn-icon">🧭</text>
+      <text class="btn-text">路线规划</text>
+    </view>
+    <view class="bar-btn navigate-btn" bindtap="openNavigation">
+      <text class="btn-icon">🚗</text>
+      <text class="btn-text">导航</text>
+    </view>
+  </view>
+</view>

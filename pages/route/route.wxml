@@ -1,0 +1,119 @@
+<!--pages/route/route.wxml - 路线规划页面-->
+<view class="container">
+  <!-- 顶部信息栏 -->
+  <view class="top-bar">
+    <view class="location-info">
+      <view class="location-item start">
+        <view class="location-dot start-dot"></view>
+        <view class="location-content">
+          <text class="location-label">起点</text>
+          <text class="location-name">{{startLocation.name || '我的位置'}}</text>
+        </view>
+      </view>
+      <view class="location-line"></view>
+      <view class="location-item end">
+        <view class="location-dot end-dot"></view>
+        <view class="location-content">
+          <text class="location-label">终点</text>
+          <text class="location-name">{{endLocation.name}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 出行方式选择 -->
+  <view class="travel-modes">
+    <view 
+      class="mode-item {{currentMode === 'walking' ? 'active' : ''}}" 
+      bindtap="selectMode" 
+      data-mode="walking"
+    >
+      <text class="mode-icon">🚶</text>
+      <text class="mode-name">步行</text>
+      <text class="mode-info" wx:if="{{routeInfo.walking}}">{{routeInfo.walking.duration}}</text>
+    </view>
+    <view 
+      class="mode-item {{currentMode === 'driving' ? 'active' : ''}}" 
+      bindtap="selectMode" 
+      data-mode="driving"
+    >
+      <text class="mode-icon">🚗</text>
+      <text class="mode-name">驾车</text>
+      <text class="mode-info" wx:if="{{routeInfo.driving}}">{{routeInfo.driving.duration}}</text>
+    </view>
+    <view 
+      class="mode-item {{currentMode === 'transit' ? 'active' : ''}}" 
+      bindtap="selectMode" 
+      data-mode="transit"
+    >
+      <text class="mode-icon">🚌</text>
+      <text class="mode-name">公交</text>
+      <text class="mode-info" wx:if="{{routeInfo.transit}}">{{routeInfo.transit.duration}}</text>
+    </view>
+    <view 
+      class="mode-item {{currentMode === 'bicycling' ? 'active' : ''}}" 
+      bindtap="selectMode" 
+      data-mode="bicycling"
+    >
+      <text class="mode-icon">🚴</text>
+      <text class="mode-name">骑行</text>
+      <text class="mode-info" wx:if="{{routeInfo.bicycling}}">{{routeInfo.bicycling.duration}}</text>
+    </view>
+  </view>
+
+  <!-- 地图 -->
+  <map
+    id="routeMap"
+    class="route-map"
+    latitude="{{mapCenter.latitude}}"
+    longitude="{{mapCenter.longitude}}"
+    scale="{{scale}}"
+    markers="{{markers}}"
+    polyline="{{polyline}}"
+    show-location="{{true}}"
+    enable-zoom="{{true}}"
+    enable-scroll="{{true}}"
+  ></map>
+
+  <!-- 路线详情面板 -->
+  <view class="route-panel {{isPanelExpanded ? 'expanded' : ''}}">
+    <view class="panel-handle" bindtap="togglePanel">
+      <view class="handle-bar"></view>
+    </view>
+
+    <view class="route-summary" wx:if="{{currentRouteDetail}}">
+      <view class="summary-main">
+        <text class="summary-distance">{{currentRouteDetail.distance}}</text>
+        <text class="summary-duration">约{{currentRouteDetail.duration}}</text>
+      </view>
+      <view class="summary-extra" wx:if="{{currentMode === 'driving' && currentRouteDetail.trafficLights}}">
+        <text>途经{{currentRouteDetail.trafficLights}}个红绿灯</text>
+      </view>
+    </view>
+
+    <!-- 详细步骤 -->
+    <scroll-view class="route-steps" scroll-y="{{true}}" wx:if="{{isPanelExpanded}}">
+      <view class="step-item" wx:for="{{routeSteps}}" wx:key="index">
+        <view class="step-icon">
+          <text>{{index + 1}}</text>
+        </view>
+        <view class="step-content">
+          <text class="step-instruction">{{item.instruction}}</text>
+          <text class="step-distance" wx:if="{{item.distance}}">{{item.distance}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="bar-btn" bindtap="openNavigation">
+      <text class="btn-icon">🧭</text>
+      <text class="btn-text">开始导航</text>
+    </view>
+    <view class="bar-btn share-btn" bindtap="shareRoute">
+      <text class="btn-icon">📤</text>
+      <text class="btn-text">分享路线</text>
+    </view>
+  </view>
+</view>
