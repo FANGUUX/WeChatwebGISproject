@@ -1,0 +1,257 @@
+/* pages/route/route.wxss - 路线规划样式 */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* 顶部信息栏 */
+.top-bar {
+  background-color: #fff;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.location-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.location-item {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 0;
+}
+
+.location-dot {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+
+.start-dot {
+  background-color: #07c160;
+}
+
+.end-dot {
+  background-color: #ff4d4f;
+}
+
+.location-content {
+  flex: 1;
+}
+
+.location-label {
+  font-size: 22rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.location-name {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.location-line {
+  width: 2rpx;
+  height: 30rpx;
+  background-color: #ddd;
+  margin-left: 9rpx;
+}
+
+/* 出行方式 */
+.travel-modes {
+  display: flex;
+  background-color: #fff;
+  padding: 16rpx 24rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.mode-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx;
+  border-radius: 12rpx;
+  margin: 0 8rpx;
+}
+
+.mode-item.active {
+  background-color: #e6f7ff;
+}
+
+.mode-icon {
+  font-size: 36rpx;
+  margin-bottom: 6rpx;
+}
+
+.mode-name {
+  font-size: 24rpx;
+  color: #333;
+  margin-bottom: 4rpx;
+}
+
+.mode-info {
+  font-size: 20rpx;
+  color: #999;
+}
+
+.mode-item.active .mode-name {
+  color: #1890ff;
+  font-weight: bold;
+}
+
+/* 地图 */
+.route-map {
+  flex: 1;
+  width: 100%;
+}
+
+/* 路线详情面板 */
+.route-panel {
+  position: absolute;
+  bottom: 120rpx;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-radius: 32rpx 32rpx 0 0;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.1);
+  max-height: 200rpx;
+  transition: max-height 0.3s ease;
+  overflow: hidden;
+}
+
+.route-panel.expanded {
+  max-height: 60vh;
+}
+
+.panel-handle {
+  display: flex;
+  justify-content: center;
+  padding: 16rpx 0;
+}
+
+.handle-bar {
+  width: 60rpx;
+  height: 8rpx;
+  background-color: #ddd;
+  border-radius: 4rpx;
+}
+
+.route-summary {
+  padding: 0 24rpx 20rpx;
+}
+
+.summary-main {
+  display: flex;
+  align-items: baseline;
+}
+
+.summary-distance {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+  margin-right: 20rpx;
+}
+
+.summary-duration {
+  font-size: 32rpx;
+  color: #07c160;
+}
+
+.summary-extra {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+/* 路线步骤 */
+.route-steps {
+  max-height: 400rpx;
+  padding: 0 24rpx;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.step-item:last-child {
+  border-bottom: none;
+}
+
+.step-icon {
+  width: 40rpx;
+  height: 40rpx;
+  background-color: #07c160;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 22rpx;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-instruction {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.5;
+}
+
+.step-distance {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 6rpx;
+  display: block;
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background-color: #fff;
+  padding: 16rpx 24rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.08);
+  gap: 20rpx;
+}
+
+.bar-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx;
+  background-color: #07c160;
+  border-radius: 12rpx;
+}
+
+.share-btn {
+  background-color: #1890ff;
+}
+
+.btn-icon {
+  font-size: 32rpx;
+  margin-right: 10rpx;
+}
+
+.btn-text {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: bold;
+}

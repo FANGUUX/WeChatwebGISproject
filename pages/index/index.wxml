@@ -1,0 +1,74 @@
+<!--pages/index/index.wxml - 首页地图页面-->
+<view class="container">
+  <!-- 地图组件 -->
+  <map
+    id="mainMap"
+    class="map"
+    latitude="{{latitude}}"
+    longitude="{{longitude}}"
+    scale="{{scale}}"
+    markers="{{markers}}"
+    show-location="{{true}}"
+    enable-zoom="{{true}}"
+    enable-scroll="{{true}}"
+    enable-rotate="{{true}}"
+    bindmarkertap="onMarkerTap"
+    bindcallouttap="onCalloutTap"
+    bindregionchange="onRegionChange"
+  >
+    <!-- 地图控件 -->
+    <cover-view class="map-controls">
+      <cover-view class="control-btn" bindtap="moveToLocation">
+        <cover-view class="control-icon-text">📍</cover-view>
+        <cover-view class="control-text">定位</cover-view>
+      </cover-view>
+      <cover-view class="control-btn" bindtap="resetView">
+        <cover-view class="control-icon-text">🔄</cover-view>
+        <cover-view class="control-text">重置</cover-view>
+      </cover-view>
+    </cover-view>
+  </map>
+
+  <!-- 底部景点列表入口 -->
+  <view class="bottom-panel">
+    <view class="panel-header" bindtap="goToAttractions">
+      <view class="panel-title">
+        <text class="title-icon">📍</text>
+        <text>南京热门景点</text>
+      </view>
+      <view class="panel-arrow">
+        <text>查看全部 ></text>
+      </view>
+    </view>
+    
+    <!-- 横向滚动的景点列表 -->
+    <scroll-view class="attraction-scroll" scroll-x="{{true}}" enable-flex>
+      <view 
+        class="attraction-card" 
+        wx:for="{{attractions}}" 
+        wx:key="id"
+        bindtap="goToDetail"
+        data-id="{{item.id}}"
+      >
+        <view class="card-image">
+          <image src="{{item.image}}" mode="aspectFill" class="card-img"></image>
+          <view class="card-category">{{item.category}}</view>
+        </view>
+        <view class="card-info">
+          <view class="card-name">{{item.name}}</view>
+          <view class="card-rating">
+            <text class="star">★</text>
+            <text class="rating-num">{{item.rating}}</text>
+          </view>
+          <view class="card-address ellipsis">{{item.address}}</view>
+        </view>
+        <view class="card-actions">
+          <view class="action-btn route-btn" catchtap="planRoute" data-id="{{item.id}}">
+            <text class="action-icon">🧭</text>
+            <text>路线</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>
