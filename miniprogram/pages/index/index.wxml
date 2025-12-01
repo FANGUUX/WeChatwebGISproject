@@ -1,0 +1,95 @@
+<!--
+  Index Page (Home)
+  首页
+-->
+<view class="container">
+  <!-- Search Bar -->
+  <view class="search-bar" bindtap="onSearchTap">
+    <view class="search-input">
+      <text class="search-icon">🔍</text>
+      <text class="search-placeholder">搜索景点、美食...</text>
+    </view>
+  </view>
+
+  <!-- Categories -->
+  <view class="section">
+    <view class="section-title">分类浏览</view>
+    <view class="categories">
+      <view 
+        class="category-item" 
+        wx:for="{{categories}}" 
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onCategoryTap"
+      >
+        <text class="category-icon">{{item.icon}}</text>
+        <text class="category-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Recommendations -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">今日推荐</text>
+      <navigator url="/pages/recommendation/index" class="section-more">查看更多 ></navigator>
+    </view>
+    <view class="recommendation-list" wx:if="{{recommendations.length}}">
+      <view 
+        class="recommendation-card" 
+        wx:for="{{recommendations}}" 
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onRecommendationTap"
+      >
+        <image class="card-image" src="{{item.coverImage || '/assets/default-attraction.png'}}" mode="aspectFill"></image>
+        <view class="card-content">
+          <view class="card-rank">TOP{{item.rank}}</view>
+          <view class="card-name">{{item.name}}</view>
+          <view class="card-info">
+            <text class="card-rating">⭐ {{item.rating.average || '暂无'}}</text>
+            <text class="card-crowd" style="color: {{item.crowdLevelColor}}">{{item.crowdLevel}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:else>
+      <text>暂无推荐</text>
+    </view>
+  </view>
+
+  <!-- Nearby Food -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">附近美食</text>
+      <navigator url="/pages/food/index" class="section-more">查看更多 ></navigator>
+    </view>
+    <view class="food-list" wx:if="{{nearbyFood.length}}">
+      <view 
+        class="food-card" 
+        wx:for="{{nearbyFood}}" 
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onFoodTap"
+      >
+        <image class="food-image" src="{{item.coverImage || '/assets/default-food.png'}}" mode="aspectFill"></image>
+        <view class="food-content">
+          <text class="food-name">{{item.name}}</text>
+          <text class="food-cuisine">{{item.cuisine}}</text>
+          <view class="food-info">
+            <text class="food-rating">⭐ {{item.rating.average || '暂无'}}</text>
+            <text class="food-distance">{{item.formattedDistance}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:else>
+      <text>暂无附近美食</text>
+    </view>
+  </view>
+
+  <!-- Loading -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

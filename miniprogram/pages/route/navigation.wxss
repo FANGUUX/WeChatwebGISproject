@@ -1,0 +1,97 @@
+/* Route Navigation Page Styles */
+.container {
+  position: relative;
+  height: 100vh;
+}
+
+.nav-map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Navigation Panel */
+.nav-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 30rpx;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.current-waypoint {
+  margin-bottom: 20rpx;
+}
+
+.waypoint-label {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+}
+
+.waypoint-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-top: 8rpx;
+}
+
+.progress-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.progress-text {
+  font-size: 24rpx;
+  color: #666;
+  margin-right: 20rpx;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 8rpx;
+  background-color: #f0f0f0;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #1aad19;
+  border-radius: 4rpx;
+  transition: width 0.3s;
+}
+
+.nav-actions {
+  display: flex;
+  justify-content: space-around;
+}
+
+.nav-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 40rpx;
+  background-color: #1aad19;
+  border-radius: 12rpx;
+  flex: 1;
+  margin: 0 10rpx;
+}
+
+.nav-action-btn.exit {
+  background-color: #ff4d4f;
+}
+
+.action-icon {
+  font-size: 36rpx;
+  margin-bottom: 4rpx;
+}
+
+.action-text {
+  font-size: 26rpx;
+  color: #fff;
+}

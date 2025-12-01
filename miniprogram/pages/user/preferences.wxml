@@ -1,0 +1,92 @@
+<!--
+  Preferences Page
+  偏好设置页面
+-->
+<view class="container">
+  <!-- Categories -->
+  <view class="section">
+    <text class="section-title">喜欢的景点类型</text>
+    <view class="tag-list">
+      <view 
+        class="tag {{preferences.favoriteCategories.includes(item.id) ? 'active' : ''}}"
+        wx:for="{{categories}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onCategoryToggle"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <!-- Transport Mode -->
+  <view class="section">
+    <text class="section-title">偏好出行方式</text>
+    <view class="transport-list">
+      <view 
+        class="transport-item {{preferences.preferredTransport === item.id ? 'active' : ''}}"
+        wx:for="{{transportModes}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onTransportChange"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <!-- Price Range -->
+  <view class="section">
+    <text class="section-title">门票价格范围（元）</text>
+    <view class="price-range">
+      <input 
+        class="price-input" 
+        type="number"
+        value="{{preferences.priceRange.min}}"
+        placeholder="最低"
+        bindinput="onPriceMinChange"
+      />
+      <text class="price-sep">-</text>
+      <input 
+        class="price-input" 
+        type="number"
+        value="{{preferences.priceRange.max}}"
+        placeholder="最高"
+        bindinput="onPriceMaxChange"
+      />
+    </view>
+  </view>
+
+  <!-- Cuisines -->
+  <view class="section">
+    <text class="section-title">喜欢的菜系</text>
+    <view class="tag-list">
+      <view 
+        class="tag {{preferences.foodPreferences.includes(item.id) ? 'active' : ''}}"
+        wx:for="{{cuisines}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onCuisineToggle"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <!-- Avoid Crowds -->
+  <view class="section">
+    <view class="switch-row">
+      <text class="switch-label">避开拥挤景点</text>
+      <switch 
+        checked="{{preferences.avoidCrowds}}"
+        color="#1aad19"
+        bindchange="onAvoidCrowdsChange"
+      />
+    </view>
+  </view>
+
+  <!-- Save Button -->
+  <view class="save-section">
+    <button class="save-btn" bindtap="savePreferences">保存</button>
+  </view>
+</view>

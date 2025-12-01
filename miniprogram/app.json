@@ -1,0 +1,71 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/user/index",
+    "pages/user/login",
+    "pages/user/profile",
+    "pages/user/preferences",
+    "pages/recommendation/index",
+    "pages/recommendation/detail",
+    "pages/route/index",
+    "pages/route/create",
+    "pages/route/detail",
+    "pages/route/navigation",
+    "pages/food/index",
+    "pages/food/detail"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1aad19",
+    "navigationBarTitleText": "智慧旅游",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#1aad19",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/recommendation/index",
+        "text": "推荐",
+        "iconPath": "assets/icons/recommend.png",
+        "selectedIconPath": "assets/icons/recommend-active.png"
+      },
+      {
+        "pagePath": "pages/route/index",
+        "text": "路线",
+        "iconPath": "assets/icons/route.png",
+        "selectedIconPath": "assets/icons/route-active.png"
+      },
+      {
+        "pagePath": "pages/food/index",
+        "text": "美食",
+        "iconPath": "assets/icons/food.png",
+        "selectedIconPath": "assets/icons/food-active.png"
+      },
+      {
+        "pagePath": "pages/user/index",
+        "text": "我的",
+        "iconPath": "assets/icons/user.png",
+        "selectedIconPath": "assets/icons/user-active.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置信息将用于推荐附近景点和美食"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

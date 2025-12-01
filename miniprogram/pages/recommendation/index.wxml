@@ -1,0 +1,70 @@
+<!--
+  Recommendation List Page
+  推荐列表页面
+-->
+<view class="container">
+  <!-- Search Bar -->
+  <view class="search-bar">
+    <input 
+      class="search-input"
+      placeholder="搜索景点..."
+      value="{{keyword}}"
+      focus="{{focusSearch}}"
+      bindinput="onSearchInput"
+      bindconfirm="onSearch"
+    />
+    <view class="search-btn" bindtap="onSearch">搜索</view>
+  </view>
+
+  <!-- Category Title -->
+  <view class="category-title" wx:if="{{category}}">
+    <text>{{category === 'nature' ? '自然风光' : category === 'history' ? '历史古迹' : category === 'entertainment' ? '休闲娱乐' : category === 'culture' ? '文化艺术' : category === 'shopping' ? '购物' : '运动户外'}}</text>
+  </view>
+
+  <!-- List -->
+  <view class="list">
+    <view 
+      class="list-item"
+      wx:for="{{recommendations}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onItemTap"
+    >
+      <image class="item-image" src="{{item.coverImage || '/assets/default-attraction.png'}}" mode="aspectFill"></image>
+      <view class="item-content">
+        <view class="item-header">
+          <text class="item-name">{{item.name}}</text>
+          <text class="item-rank" wx:if="{{item.rank}}">TOP{{item.rank}}</text>
+        </view>
+        <text class="item-category">{{item.category === 'nature' ? '自然风光' : item.category === 'history' ? '历史古迹' : item.category === 'entertainment' ? '休闲娱乐' : item.category === 'culture' ? '文化艺术' : item.category === 'shopping' ? '购物' : '运动户外'}}</text>
+        <view class="item-info">
+          <text class="item-rating">⭐ {{item.rating.average || '暂无'}}</text>
+          <text class="item-crowd" wx:if="{{item.crowdLevel}}">{{item.crowdLevel}}</text>
+        </view>
+        <view class="item-footer">
+          <text class="item-price" wx:if="{{item.ticketPrice}}">
+            {{item.ticketPrice.adult > 0 ? '¥' + item.ticketPrice.adult : '免费'}}
+          </text>
+          <text class="item-duration" wx:if="{{item.recommendedDuration}}">
+            建议游玩{{item.recommendedDuration}}分钟
+          </text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Empty State -->
+  <view class="empty" wx:if="{{!loading && recommendations.length === 0}}">
+    <text>暂无数据</text>
+  </view>
+
+  <!-- Loading More -->
+  <view class="loading-more" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- No More -->
+  <view class="no-more" wx:if="{{!hasMore && recommendations.length > 0}}">
+    <text>没有更多了</text>
+  </view>
+</view>

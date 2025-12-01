@@ -1,0 +1,82 @@
+<!--
+  Route List Page
+  路线列表页面
+-->
+<view class="container">
+  <!-- Header -->
+  <view class="header" wx:if="{{action === 'select'}}">
+    <text class="header-text">选择一条路线添加地点</text>
+  </view>
+
+  <!-- Create Button -->
+  <view class="create-section">
+    <button class="create-btn" bindtap="onCreateRoute">
+      <text class="create-icon">+</text>
+      <text>创建新路线</text>
+    </button>
+  </view>
+
+  <!-- Route List -->
+  <view class="route-list" wx:if="{{routes.length}}">
+    <view 
+      class="route-card"
+      wx:for="{{routes}}"
+      wx:key="_id"
+      data-id="{{item._id}}"
+      bindtap="onRouteTap"
+    >
+      <view class="route-header">
+        <text class="route-name">{{item.name}}</text>
+        <text class="route-status {{item.status}}">
+          {{item.status === 'draft' ? '草稿' : item.status === 'planned' ? '已规划' : item.status === 'active' ? '进行中' : item.status === 'completed' ? '已完成' : '已取消'}}
+        </text>
+      </view>
+
+      <view class="route-waypoints">
+        <text class="waypoint" wx:for="{{item.waypoints}}" wx:for-item="wp" wx:key="order">
+          {{wp.name}}{{index < item.waypoints.length - 1 ? ' → ' : ''}}
+        </text>
+      </view>
+
+      <view class="route-info">
+        <view class="info-item">
+          <text class="info-icon">📍</text>
+          <text class="info-value">{{item.waypoints.length}}个地点</text>
+        </view>
+        <view class="info-item">
+          <text class="info-icon">📏</text>
+          <text class="info-value">{{item.formattedDistance}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-icon">⏱️</text>
+          <text class="info-value">{{item.formattedDuration}}</text>
+        </view>
+      </view>
+
+      <view class="route-transport">
+        <text class="transport-icon">
+          {{item.transportMode === 'walking' ? '🚶' : item.transportMode === 'cycling' ? '🚲' : item.transportMode === 'driving' ? '🚗' : item.transportMode === 'transit' ? '🚌' : '🔄'}}
+        </text>
+        <text class="transport-name">
+          {{item.transportMode === 'walking' ? '步行' : item.transportMode === 'cycling' ? '骑行' : item.transportMode === 'driving' ? '驾车' : item.transportMode === 'transit' ? '公交' : '混合'}}
+        </text>
+      </view>
+
+      <view class="route-actions" catchtap="onDeleteRoute" data-id="{{item._id}}">
+        <text class="delete-btn">删除</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Empty State -->
+  <view class="empty" wx:if="{{!loading && routes.length === 0}}">
+    <text class="empty-icon">🗺️</text>
+    <text class="empty-text">还没有路线</text>
+    <text class="empty-tip">点击上方按钮创建第一条路线</text>
+  </view>
+
+  <!-- Loading -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

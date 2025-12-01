@@ -1,0 +1,107 @@
+<!--
+  Food Detail Page
+  美食详情页面
+-->
+<view class="container" wx:if="{{restaurant}}">
+  <!-- Cover Image -->
+  <swiper class="cover-swiper" indicator-dots="{{restaurant.images.length > 1}}" autoplay>
+    <swiper-item wx:for="{{restaurant.images.length ? restaurant.images : [{ url: restaurant.coverImage || '/assets/default-food.png' }]}}" wx:key="url">
+      <image class="cover-image" src="{{item.url}}" mode="aspectFill"></image>
+    </swiper-item>
+  </swiper>
+
+  <!-- Basic Info -->
+  <view class="info-section">
+    <view class="title-row">
+      <text class="restaurant-name">{{restaurant.name}}</text>
+      <view class="rating">
+        <text class="rating-star">⭐</text>
+        <text class="rating-value">{{restaurant.rating.average || '暂无'}}</text>
+        <text class="rating-count">({{restaurant.rating.count}}人评价)</text>
+      </view>
+    </view>
+
+    <view class="tags">
+      <text class="tag cuisine">{{restaurant.cuisine === 'chinese' ? '中餐' : restaurant.cuisine === 'western' ? '西餐' : restaurant.cuisine === 'japanese' ? '日料' : restaurant.cuisine === 'korean' ? '韩餐' : restaurant.cuisine}}</text>
+      <text class="tag" wx:if="{{restaurant.subCategory}}">{{restaurant.subCategory}}</text>
+      <text class="tag" wx:for="{{restaurant.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+
+    <view class="location" bindtap="onNavigate">
+      <text class="location-icon">📍</text>
+      <text class="location-text">{{restaurant.location.address || '点击导航'}}</text>
+    </view>
+  </view>
+
+  <!-- Detail Info -->
+  <view class="detail-section">
+    <view class="detail-item">
+      <text class="detail-label">人均消费</text>
+      <text class="detail-value price">¥{{restaurant.priceRange.average}}</text>
+    </view>
+
+    <view class="detail-item">
+      <text class="detail-label">口味评分</text>
+      <text class="detail-value">{{restaurant.rating.taste || '暂无'}}</text>
+    </view>
+
+    <view class="detail-item">
+      <text class="detail-label">环境评分</text>
+      <text class="detail-value">{{restaurant.rating.environment || '暂无'}}</text>
+    </view>
+
+    <view class="detail-item">
+      <text class="detail-label">服务评分</text>
+      <text class="detail-value">{{restaurant.rating.service || '暂无'}}</text>
+    </view>
+  </view>
+
+  <!-- Features -->
+  <view class="features-section" wx:if="{{restaurant.features}}">
+    <text class="section-title">服务设施</text>
+    <view class="features-list">
+      <view class="feature-item {{restaurant.features.hasParking ? 'active' : ''}}">
+        <text class="feature-icon">🅿️</text>
+        <text class="feature-name">停车位</text>
+      </view>
+      <view class="feature-item {{restaurant.features.hasWifi ? 'active' : ''}}">
+        <text class="feature-icon">📶</text>
+        <text class="feature-name">WiFi</text>
+      </view>
+      <view class="feature-item {{restaurant.features.hasPrivateRoom ? 'active' : ''}}">
+        <text class="feature-icon">🚪</text>
+        <text class="feature-name">包间</text>
+      </view>
+      <view class="feature-item {{restaurant.features.acceptsReservation ? 'active' : ''}}">
+        <text class="feature-icon">📞</text>
+        <text class="feature-name">可预订</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Description -->
+  <view class="desc-section" wx:if="{{restaurant.description}}">
+    <text class="section-title">商家介绍</text>
+    <text class="description">{{restaurant.description}}</text>
+  </view>
+
+  <!-- Bottom Actions -->
+  <view class="bottom-actions">
+    <view class="action-btn secondary" bindtap="onCall">
+      <text class="btn-icon">📞</text>
+      <text>电话</text>
+    </view>
+    <view class="action-btn secondary" bindtap="onNavigate">
+      <text class="btn-icon">🗺️</text>
+      <text>导航</text>
+    </view>
+    <view class="action-btn primary" bindtap="onAddToRoute">
+      <text>加入路线</text>
+    </view>
+  </view>
+</view>
+
+<!-- Loading -->
+<view class="loading" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>
