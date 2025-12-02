@@ -99,7 +99,7 @@ Page({
       this.setData({
         recommendations: items,
         loading: false,
-        hasMore: items.length >= params.limit
+        hasMore: items.length === params.limit
       });
     } catch (error) {
       showToast(error.message || '加载失败');
@@ -142,7 +142,7 @@ Page({
       } else {
         this.setData({
           recommendations: [...this.data.recommendations, ...newItems],
-          hasMore: newItems.length >= params.limit
+          hasMore: newItems.length === params.limit
         });
       }
     } catch (error) {

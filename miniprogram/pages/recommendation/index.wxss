@@ -33,7 +33,7 @@
   right: 16rpx;
   width: 36rpx;
   height: 36rpx;
-  line-height: 32rpx;
+  line-height: 36rpx;
   text-align: center;
   font-size: 32rpx;
   color: #999;
