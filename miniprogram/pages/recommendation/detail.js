@@ -31,11 +31,30 @@ Page({
       wx.setNavigationBarTitle({
         title: result.data.name
       });
+
+      // Record view behavior for personalized recommendations
+      this.recordViewBehavior(result.data);
     } catch (error) {
       showToast(error.message || '加载失败');
       this.setData({ loading: false });
     }
     hideLoading();
+  },
+
+  /**
+   * Record user view behavior for personalized recommendations
+   */
+  recordViewBehavior(attraction) {
+    const app = getApp();
+    if (app.globalData.isLoggedIn) {
+      userApi.recordBehavior('view', {
+        attractionId: attraction._id || attraction.id,
+        category: attraction.category,
+        timestamp: new Date().toISOString()
+      }).catch(err => {
+        console.warn('Failed to record behavior:', err);
+      });
+    }
   },
 
   onShareAppMessage() {

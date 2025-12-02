@@ -2,7 +2,7 @@
  * Food Detail Page
  * 美食详情页面
  */
-const { foodApi, routeApi } = require('../../services/api');
+const { foodApi, routeApi, userApi } = require('../../services/api');
 const { showToast, showLoading, hideLoading, confirm } = require('../../utils/util');
 
 Page({
@@ -31,11 +31,30 @@ Page({
       wx.setNavigationBarTitle({
         title: result.data.name
       });
+
+      // Record view behavior for personalized recommendations
+      this.recordViewBehavior(result.data);
     } catch (error) {
       showToast(error.message || '加载失败');
       this.setData({ loading: false });
     }
     hideLoading();
+  },
+
+  /**
+   * Record user view behavior for personalized food recommendations
+   */
+  recordViewBehavior(restaurant) {
+    const app = getApp();
+    if (app.globalData.isLoggedIn) {
+      userApi.recordBehavior('view', {
+        restaurantId: restaurant._id || restaurant.id,
+        cuisine: restaurant.cuisine,
+        timestamp: new Date().toISOString()
+      }).catch(err => {
+        console.warn('Failed to record behavior:', err);
+      });
+    }
   },
 
   onShareAppMessage() {
