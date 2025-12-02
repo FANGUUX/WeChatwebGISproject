@@ -12,12 +12,33 @@
   background-color: #fff;
 }
 
-.search-input {
+.search-input-wrapper {
   flex: 1;
-  padding: 16rpx 24rpx;
-  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  position: relative;
   background-color: #f5f5f5;
   border-radius: 32rpx;
+}
+
+.search-input {
+  flex: 1;
+  padding: 16rpx 60rpx 16rpx 24rpx;
+  font-size: 28rpx;
+  background-color: transparent;
+}
+
+.search-clear {
+  position: absolute;
+  right: 16rpx;
+  width: 36rpx;
+  height: 36rpx;
+  line-height: 32rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color: #999;
+  background-color: #ddd;
+  border-radius: 50%;
 }
 
 .search-btn {

@@ -5,14 +5,18 @@
 <view class="container">
   <!-- Search Bar -->
   <view class="search-bar">
-    <input 
-      class="search-input"
-      placeholder="搜索景点..."
-      value="{{keyword}}"
-      focus="{{focusSearch}}"
-      bindinput="onSearchInput"
-      bindconfirm="onSearch"
-    />
+    <view class="search-input-wrapper">
+      <input 
+        class="search-input"
+        placeholder="搜索景点..."
+        value="{{keyword}}"
+        focus="{{focusSearch}}"
+        confirm-type="search"
+        bindinput="onSearchInput"
+        bindconfirm="onSearch"
+      />
+      <view class="search-clear" wx:if="{{keyword}}" bindtap="onClearSearch">×</view>
+    </view>
     <view class="search-btn" bindtap="onSearch">搜索</view>
   </view>
 
