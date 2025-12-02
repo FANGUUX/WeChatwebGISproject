@@ -53,16 +53,25 @@ Page({
       wx.getLocation({
         type: 'gcj02',
         success: (res) => {
-          this.setData({
-            location: {
-              latitude: res.latitude,
-              longitude: res.longitude
-            }
-          });
+          const location = {
+            latitude: res.latitude,
+            longitude: res.longitude
+          };
+          this.setData({ location });
+          app.globalData.location = location;
           this.loadData();
         },
-        fail: () => {
-          showToast('获取位置失败');
+        fail: (err) => {
+          console.warn('获取位置失败:', err);
+          // Use default Nanjing coordinates for demo
+          const defaultLocation = {
+            latitude: 32.0603,
+            longitude: 118.7969
+          };
+          this.setData({ location: defaultLocation });
+          app.globalData.location = defaultLocation;
+          showToast('使用默认位置');
+          this.loadData();
         }
       });
     }
@@ -91,8 +100,9 @@ Page({
         result = await foodApi.discoverNearby(params);
       }
 
+      const restaurants = result.data.restaurants || [];
       this.setData({
-        restaurants: result.data.restaurants.map(r => ({
+        restaurants: restaurants.map(r => ({
           ...r,
           formattedDistance: formatDistance(r.distance)
         })),
@@ -100,7 +110,7 @@ Page({
       });
     } catch (error) {
       showToast(error.message || '加载失败');
-      this.setData({ loading: false });
+      this.setData({ loading: false, restaurants: [] });
     }
     hideLoading();
   },
