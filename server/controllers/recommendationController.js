@@ -73,6 +73,14 @@ const getAttractionDetails = async (req, res, next) => {
   try {
     const { id } = req.params;
     
+    // Check for invalid/undefined IDs to prevent 500 error
+    if (!id || id === 'undefined') {
+      return res.status(400).json({
+        success: false,
+        message: '无效的景点ID'
+      });
+    }
+    
     const attraction = await Attraction.findById(id);
     if (!attraction) {
       return res.status(404).json({
@@ -101,7 +109,11 @@ const getAttractionDetails = async (req, res, next) => {
 const getAttractionsByCategory = async (req, res, next) => {
   try {
     const { category } = req.params;
-    const { longitude, latitude, limit = 20 } = req.query;
+    const { longitude, latitude, limit = 20, page = 1 } = req.query;
+
+    const parsedLimit = parseInt(limit);
+    const parsedPage = parseInt(page);
+    const skip = (parsedPage - 1) * parsedLimit;
 
     const query = { 
       category,
@@ -121,18 +133,29 @@ const getAttractionsByCategory = async (req, res, next) => {
             $maxDistance: 50000
           }
         }
-      }).limit(parseInt(limit));
+      })
+      .skip(skip)
+      .limit(parsedLimit);
     } else {
       attractions = await Attraction.find(query)
         .sort({ 'rating.average': -1 })
-        .limit(parseInt(limit));
+        .skip(skip)
+        .limit(parsedLimit);
     }
+
+    // Map _id to id to match frontend expectations
+    const mappedAttractions = attractions.map(a => ({
+      ...a.toObject(),
+      id: a._id
+    }));
 
     res.json({
       success: true,
       data: {
-        attractions,
-        total: attractions.length
+        attractions: mappedAttractions,
+        total: mappedAttractions.length,
+        page: parsedPage,
+        limit: parsedLimit
       }
     });
   } catch (error) {
@@ -145,7 +168,7 @@ const getAttractionsByCategory = async (req, res, next) => {
  */
 const searchAttractions = async (req, res, next) => {
   try {
-    const { keyword, longitude, latitude, limit = 20 } = req.query;
+    const { keyword, longitude, latitude, limit = 20, page = 1 } = req.query;
 
     if (!keyword) {
       return res.status(400).json({
@@ -153,6 +176,10 @@ const searchAttractions = async (req, res, next) => {
         message: '请输入搜索关键词'
       });
     }
+
+    const parsedLimit = parseInt(limit);
+    const parsedPage = parseInt(page);
+    const skip = (parsedPage - 1) * parsedLimit;
 
     // Record search behavior if user is authenticated
     if (req.user) {
@@ -180,7 +207,9 @@ const searchAttractions = async (req, res, next) => {
       };
     }
 
-    const attractions = await Attraction.find(query).limit(parseInt(limit));
+    const attractions = await Attraction.find(query)
+      .skip(skip)
+      .limit(parsedLimit);
 
     res.json({
       success: true,
@@ -193,7 +222,9 @@ const searchAttractions = async (req, res, next) => {
           location: a.location,
           coverImage: a.coverImage
         })),
-        total: attractions.length
+        total: attractions.length,
+        page: parsedPage,
+        limit: parsedLimit
       }
     });
   } catch (error) {
@@ -206,7 +237,7 @@ const searchAttractions = async (req, res, next) => {
  */
 const getNearbyAttractions = async (req, res, next) => {
   try {
-    const { longitude, latitude, radius = 5000, limit = 20 } = req.query;
+    const { longitude, latitude, radius = 5000, limit = 20, page = 1 } = req.query;
 
     if (!longitude || !latitude) {
       return res.status(400).json({
@@ -215,17 +246,25 @@ const getNearbyAttractions = async (req, res, next) => {
       });
     }
 
+    const parsedLimit = parseInt(limit);
+    const parsedPage = parseInt(page);
+    const skip = (parsedPage - 1) * parsedLimit;
+
     const attractions = await Attraction.findNearby(
       parseFloat(longitude),
       parseFloat(latitude),
       parseInt(radius)
-    ).limit(parseInt(limit));
+    )
+    .skip(skip)
+    .limit(parsedLimit);
 
     res.json({
       success: true,
       data: {
         attractions,
-        total: attractions.length
+        total: attractions.length,
+        page: parsedPage,
+        limit: parsedLimit
       }
     });
   } catch (error) {
