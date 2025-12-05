@@ -30,11 +30,18 @@ const getRecommendations = async (req, res, next) => {
       limit: limit ? parseInt(limit) : 10
     });
 
+    // Map _id to id to match frontend expectations
+    const mappedRecommendations = recommendations.map(a => {
+      const obj = a.toObject ? a.toObject() : a;
+      const { _id, ...rest } = obj;
+      return { ...rest, id: _id };
+    });
+
     res.json({
       success: true,
       data: {
-        recommendations,
-        total: recommendations.length
+        recommendations: mappedRecommendations,
+        total: mappedRecommendations.length
       }
     });
   } catch (error) {
@@ -54,11 +61,18 @@ const getPersonalizedRecommendations = async (req, res, next) => {
       limit
     );
 
+    // Map _id to id to match frontend expectations
+    const mappedRecommendations = recommendations.map(a => {
+      const obj = a.toObject ? a.toObject() : a;
+      const { _id, ...rest } = obj;
+      return { ...rest, id: _id };
+    });
+
     res.json({
       success: true,
       data: {
-        recommendations,
-        total: recommendations.length
+        recommendations: mappedRecommendations,
+        total: mappedRecommendations.length
       }
     });
   } catch (error) {
@@ -285,11 +299,17 @@ const getNearbyAttractions = async (req, res, next) => {
     .skip(skip)
     .limit(parsedLimit);
 
+    // Map _id to id to match frontend expectations, remove duplicate _id
+    const mappedAttractions = attractions.map(a => {
+      const { _id, ...rest } = a.toObject();
+      return { ...rest, id: _id };
+    });
+
     res.json({
       success: true,
       data: {
-        attractions,
-        total: attractions.length,
+        attractions: mappedAttractions,
+        total: mappedAttractions.length,
         page: parsedPage,
         limit: parsedLimit
       }
