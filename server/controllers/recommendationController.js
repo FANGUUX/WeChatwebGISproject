@@ -3,6 +3,7 @@
  * 推荐控制器 - 处理景点推荐请求
  */
 const { query } = require('express-validator');
+const mongoose = require('mongoose');
 const recommendationService = require('../services/recommendationService');
 const Attraction = require('../models/Attraction');
 
@@ -88,7 +89,7 @@ const getAttractionDetails = async (req, res, next) => {
     const { id } = req.params;
     
     // Check for invalid/undefined IDs to prevent 500 error
-    if (!id || id === 'undefined' || !require('mongoose').Types.ObjectId.isValid(id)) {
+    if (!id || id === 'undefined' || !mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         success: false,
         message: '无效的景点ID'
