@@ -144,7 +144,26 @@ const getAttractionsByCategory = async (req, res, next) => {
     };
 
     let attractions;
+    let total;
+    
     if (longitude && latitude) {
+      // For geospatial queries, we need to execute the query twice
+      // Note: countDocuments doesn't work well with $near, so we get all IDs first
+      const allResults = await Attraction.find({
+        ...query,
+        location: {
+          $near: {
+            $geometry: {
+              type: 'Point',
+              coordinates: [parseFloat(longitude), parseFloat(latitude)]
+            },
+            $maxDistance: 50000
+          }
+        }
+      }).select('_id');
+      
+      total = allResults.length;
+      
       attractions = await Attraction.find({
         ...query,
         location: {
@@ -160,6 +179,8 @@ const getAttractionsByCategory = async (req, res, next) => {
       .skip(skip)
       .limit(parsedLimit);
     } else {
+      total = await Attraction.countDocuments(query);
+      
       attractions = await Attraction.find(query)
         .sort({ 'rating.average': -1 })
         .skip(skip)
@@ -176,7 +197,7 @@ const getAttractionsByCategory = async (req, res, next) => {
       success: true,
       data: {
         attractions: mappedAttractions,
-        total: mappedAttractions.length,
+        total,
         page: parsedPage,
         limit: parsedLimit
       }
@@ -239,6 +260,11 @@ const searchAttractions = async (req, res, next) => {
       };
     }
 
+    // Get total count and paginated results
+    const total = longitude && latitude 
+      ? (await Attraction.find(query).select('_id')).length  // For geospatial queries
+      : await Attraction.countDocuments(query);
+
     const attractions = await Attraction.find(query)
       .skip(skip)
       .limit(parsedLimit);
@@ -254,7 +280,7 @@ const searchAttractions = async (req, res, next) => {
           location: a.location,
           coverImage: a.coverImage
         })),
-        total: attractions.length,
+        total,
         page: parsedPage,
         limit: parsedLimit
       }
@@ -291,6 +317,15 @@ const getNearbyAttractions = async (req, res, next) => {
     
     const skip = (parsedPage - 1) * parsedLimit;
 
+    // Get all results for total count (geospatial queries don't work well with countDocuments)
+    const allResults = await Attraction.findNearby(
+      parseFloat(longitude),
+      parseFloat(latitude),
+      parseInt(radius)
+    ).select('_id');
+    
+    const total = allResults.length;
+
     const attractions = await Attraction.findNearby(
       parseFloat(longitude),
       parseFloat(latitude),
@@ -309,7 +344,7 @@ const getNearbyAttractions = async (req, res, next) => {
       success: true,
       data: {
         attractions: mappedAttractions,
-        total: mappedAttractions.length,
+        total,
         page: parsedPage,
         limit: parsedLimit
       }
