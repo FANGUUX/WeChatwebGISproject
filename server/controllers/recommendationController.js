@@ -74,7 +74,7 @@ const getAttractionDetails = async (req, res, next) => {
     const { id } = req.params;
     
     // Check for invalid/undefined IDs to prevent 500 error
-    if (!id || id === 'undefined') {
+    if (!id || id === 'undefined' || !require('mongoose').Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         success: false,
         message: '无效的景点ID'
@@ -113,6 +113,15 @@ const getAttractionsByCategory = async (req, res, next) => {
 
     const parsedLimit = parseInt(limit);
     const parsedPage = parseInt(page);
+    
+    // Validate parsed integers
+    if (isNaN(parsedLimit) || parsedLimit < 1 || isNaN(parsedPage) || parsedPage < 1) {
+      return res.status(400).json({
+        success: false,
+        message: '页码和数量必须是正整数'
+      });
+    }
+    
     const skip = (parsedPage - 1) * parsedLimit;
 
     const query = { 
@@ -143,11 +152,11 @@ const getAttractionsByCategory = async (req, res, next) => {
         .limit(parsedLimit);
     }
 
-    // Map _id to id to match frontend expectations
-    const mappedAttractions = attractions.map(a => ({
-      ...a.toObject(),
-      id: a._id
-    }));
+    // Map _id to id to match frontend expectations, remove duplicate _id
+    const mappedAttractions = attractions.map(a => {
+      const { _id, ...rest } = a.toObject();
+      return { ...rest, id: _id };
+    });
 
     res.json({
       success: true,
@@ -179,6 +188,15 @@ const searchAttractions = async (req, res, next) => {
 
     const parsedLimit = parseInt(limit);
     const parsedPage = parseInt(page);
+    
+    // Validate parsed integers
+    if (isNaN(parsedLimit) || parsedLimit < 1 || isNaN(parsedPage) || parsedPage < 1) {
+      return res.status(400).json({
+        success: false,
+        message: '页码和数量必须是正整数'
+      });
+    }
+    
     const skip = (parsedPage - 1) * parsedLimit;
 
     // Record search behavior if user is authenticated
@@ -248,6 +266,15 @@ const getNearbyAttractions = async (req, res, next) => {
 
     const parsedLimit = parseInt(limit);
     const parsedPage = parseInt(page);
+    
+    // Validate parsed integers
+    if (isNaN(parsedLimit) || parsedLimit < 1 || isNaN(parsedPage) || parsedPage < 1) {
+      return res.status(400).json({
+        success: false,
+        message: '页码和数量必须是正整数'
+      });
+    }
+    
     const skip = (parsedPage - 1) * parsedLimit;
 
     const attractions = await Attraction.findNearby(
