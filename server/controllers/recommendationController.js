@@ -131,7 +131,16 @@ const getAttractionsByCategory = async (req, res, next) => {
     res.json({
       success: true,
       data: {
-        attractions,
+        attractions: attractions.map(a => ({
+          id: a._id,
+          name: a.name,
+          category: a.category,
+          rating: a.rating,
+          location: a.location,
+          ticketPrice: a.ticketPrice,
+          coverImage: a.coverImage,
+          recommendedDuration: a.recommendedDuration
+        })),
         total: attractions.length
       }
     });
@@ -224,7 +233,16 @@ const getNearbyAttractions = async (req, res, next) => {
     res.json({
       success: true,
       data: {
-        attractions,
+        attractions: attractions.map(a => ({
+          id: a._id,
+          name: a.name,
+          category: a.category,
+          rating: a.rating,
+          location: a.location,
+          ticketPrice: a.ticketPrice,
+          coverImage: a.coverImage,
+          recommendedDuration: a.recommendedDuration
+        })),
         total: attractions.length
       }
     });
