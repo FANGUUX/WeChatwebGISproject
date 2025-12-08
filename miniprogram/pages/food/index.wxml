@@ -3,6 +3,11 @@
   美食发现页面
 -->
 <view class="container">
+  <!-- Mode Header -->
+  <view class="mode-header" wx:if="{{action === 'addToRoute'}}">
+    <text class="mode-title">选择要添加到路线的美食</text>
+  </view>
+
   <!-- Search Bar -->
   <view class="search-bar">
     <input 
@@ -64,6 +69,10 @@
           <text class="feature" wx:if="{{item.features.hasWifi}}">📶 WiFi</text>
           <text class="feature" wx:if="{{item.features.acceptsReservation}}">📞 可预订</text>
         </view>
+      </view>
+      <!-- Add to Route Button -->
+      <view class="add-button" wx:if="{{action === 'addToRoute'}}" data-id="{{item.id}}" catchtap="onAddToRoute">
+        <text>+ 添加</text>
       </view>
     </view>
   </view>

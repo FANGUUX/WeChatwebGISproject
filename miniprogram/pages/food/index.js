@@ -2,7 +2,7 @@
  * Food Discovery Page
  * 美食发现页面
  */
-const { foodApi } = require('../../services/api');
+const { foodApi, routeApi } = require('../../services/api');
 const { formatDistance, getCuisineName, showToast, showLoading, hideLoading } = require('../../utils/util');
 
 Page({
@@ -12,12 +12,24 @@ Page({
     selectedCuisine: '',
     keyword: '',
     location: null,
-    loading: false
+    loading: false,
+    // Add to route mode
+    action: '',
+    routeId: ''
   },
 
-  onLoad() {
+  onLoad(options) {
     this.loadCuisines();
     this.getLocation();
+    
+    // Handle add to route mode
+    if (options.action === 'addToRoute' && options.routeId) {
+      this.setData({
+        action: 'addToRoute',
+        routeId: options.routeId
+      });
+      wx.setNavigationBarTitle({ title: '选择要添加的美食' });
+    }
   },
 
   onPullDownRefresh() {
@@ -123,8 +135,40 @@ Page({
 
   onRestaurantTap(e) {
     const { id } = e.currentTarget.dataset;
+    
+    // If in add to route mode, don't navigate to detail, show action sheet instead
+    if (this.data.action === 'addToRoute') {
+      return; // Let the add button handle this
+    }
+    
     wx.navigateTo({
       url: `/pages/food/detail?id=${id}`
     });
+  },
+
+  async onAddToRoute(e) {
+    const { id } = e.currentTarget.dataset;
+    
+    if (!this.data.routeId) {
+      showToast('路线信息丢失');
+      return;
+    }
+
+    try {
+      showLoading('添加中...');
+      await routeApi.addWaypoint(this.data.routeId, {
+        placeId: id,
+        placeType: 'Food'
+      });
+      hideLoading();
+      showToast('已添加到路线');
+      
+      setTimeout(() => {
+        wx.navigateBack();
+      }, 1500);
+    } catch (error) {
+      hideLoading();
+      showToast(error.message || '添加失败');
+    }
   }
 });

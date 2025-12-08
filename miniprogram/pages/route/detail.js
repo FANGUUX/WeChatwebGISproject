@@ -73,8 +73,21 @@ Page({
   },
 
   onAddPlace() {
-    wx.navigateTo({
-      url: '/pages/recommendation/index?action=addToRoute&routeId=' + this.data.id
+    wx.showActionSheet({
+      itemList: ['添加景点', '添加美食'],
+      success: (res) => {
+        if (res.tapIndex === 0) {
+          // Add attraction
+          wx.navigateTo({
+            url: '/pages/recommendation/index?action=addToRoute&routeId=' + this.data.id
+          });
+        } else if (res.tapIndex === 1) {
+          // Add food
+          wx.navigateTo({
+            url: '/pages/food/index?action=addToRoute&routeId=' + this.data.id
+          });
+        }
+      }
     });
   },
 
