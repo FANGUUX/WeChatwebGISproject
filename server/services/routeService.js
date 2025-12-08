@@ -68,6 +68,12 @@ class RouteService {
       await this.calculateSegments(route);
     }
 
+    // Update route status to planned if it has waypoints and is still in draft
+    if (route.status === 'draft' && route.waypoints.length >= 2) {
+      route.status = 'planned';
+      await route.save();
+    }
+
     return route;
   }
 
