@@ -6,6 +6,18 @@ const { query } = require('express-validator');
 const recommendationService = require('../services/recommendationService');
 const Attraction = require('../models/Attraction');
 
+// Helper function to transform attraction for response
+const transformAttractionResponse = (attraction) => ({
+  id: attraction._id,
+  name: attraction.name,
+  category: attraction.category,
+  rating: attraction.rating,
+  location: attraction.location,
+  ticketPrice: attraction.ticketPrice,
+  coverImage: attraction.coverImage,
+  recommendedDuration: attraction.recommendedDuration
+});
+
 // Validation rules
 const recommendationValidation = [
   query('longitude').optional().isFloat({ min: -180, max: 180 }).withMessage('经度值无效'),
@@ -131,7 +143,7 @@ const getAttractionsByCategory = async (req, res, next) => {
     res.json({
       success: true,
       data: {
-        attractions,
+        attractions: attractions.map(transformAttractionResponse),
         total: attractions.length
       }
     });
@@ -185,14 +197,7 @@ const searchAttractions = async (req, res, next) => {
     res.json({
       success: true,
       data: {
-        attractions: attractions.map(a => ({
-          id: a._id,
-          name: a.name,
-          category: a.category,
-          rating: a.rating,
-          location: a.location,
-          coverImage: a.coverImage
-        })),
+        attractions: attractions.map(transformAttractionResponse),
         total: attractions.length
       }
     });
@@ -224,7 +229,7 @@ const getNearbyAttractions = async (req, res, next) => {
     res.json({
       success: true,
       data: {
-        attractions,
+        attractions: attractions.map(transformAttractionResponse),
         total: attractions.length
       }
     });
