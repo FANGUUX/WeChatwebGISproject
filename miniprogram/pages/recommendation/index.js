@@ -174,9 +174,9 @@ Page({
   onItemTap(e) {
     const { id } = e.currentTarget.dataset;
     
-    // If in add to route mode, don't navigate to detail, show action sheet instead
+    // Prevent navigation to detail view when in add-to-route mode; add button handles the action
     if (this.data.action === 'addToRoute') {
-      return; // Let the add button handle this
+      return;
     }
     
     wx.navigateTo({
