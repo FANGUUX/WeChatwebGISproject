@@ -227,8 +227,16 @@ Page({
       hideLoading();
       showToast('已添加到路线');
       
+      // Navigate back to route detail page
       setTimeout(() => {
-        wx.navigateBack();
+        wx.navigateTo({
+          url: `/pages/route/detail?id=${this.data.routeId}`,
+          fail: (err) => {
+            console.error('Navigate to route detail failed:', err);
+            // If navigation fails, try switching to route tab
+            wx.switchTab({ url: '/pages/route/index' });
+          }
+        });
       }, 1500);
     } catch (error) {
       console.error('Add waypoint error:', error);
