@@ -27,7 +27,7 @@ Page({
     if (options.focus === 'search') {
       this.setData({ focusSearch: true });
     }
-    // Handle add to route mode
+    // Handle add to route mode from URL params (non-tabBar navigation)
     if (options.action === 'addToRoute' && options.routeId) {
       this.setData({
         action: 'addToRoute',
@@ -36,6 +36,24 @@ Page({
       wx.setNavigationBarTitle({ title: '选择要添加的景点' });
     }
     this.getLocation();
+  },
+
+  onShow() {
+    // Check for addToRoute context from global data (for tabBar navigation)
+    const app = getApp();
+    if (app.globalData.addToRouteContext && 
+        app.globalData.addToRouteContext.placeType === 'Attraction') {
+      console.log('Found addToRoute context from global data:', app.globalData.addToRouteContext);
+      
+      this.setData({
+        action: 'addToRoute',
+        routeId: app.globalData.addToRouteContext.routeId
+      });
+      wx.setNavigationBarTitle({ title: '选择要添加的景点' });
+      
+      // Clear the context after using it
+      delete app.globalData.addToRouteContext;
+    }
   },
 
   onPullDownRefresh() {

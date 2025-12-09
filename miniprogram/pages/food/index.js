@@ -22,13 +22,31 @@ Page({
     this.loadCuisines();
     this.getLocation();
     
-    // Handle add to route mode
+    // Handle add to route mode from URL params (non-tabBar navigation)
     if (options.action === 'addToRoute' && options.routeId) {
       this.setData({
         action: 'addToRoute',
         routeId: options.routeId
       });
       wx.setNavigationBarTitle({ title: '选择要添加的美食' });
+    }
+  },
+
+  onShow() {
+    // Check for addToRoute context from global data (for tabBar navigation)
+    const app = getApp();
+    if (app.globalData.addToRouteContext && 
+        app.globalData.addToRouteContext.placeType === 'Food') {
+      console.log('Found addToRoute context from global data:', app.globalData.addToRouteContext);
+      
+      this.setData({
+        action: 'addToRoute',
+        routeId: app.globalData.addToRouteContext.routeId
+      });
+      wx.setNavigationBarTitle({ title: '选择要添加的美食' });
+      
+      // Clear the context after using it
+      delete app.globalData.addToRouteContext;
     }
   },
 

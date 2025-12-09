@@ -86,32 +86,48 @@ Page({
       success: (res) => {
         console.log('Action sheet selected index:', res.tapIndex);
         
+        const app = getApp();
+        
         if (res.tapIndex === 0) {
-          // Add attraction
-          const url = '/pages/recommendation/index?action=addToRoute&routeId=' + this.data.id;
-          console.log('Navigating to:', url);
-          wx.navigateTo({
-            url: url,
+          // Add attraction - use switchTab for tabBar pages
+          console.log('Switching to recommendation tab with routeId:', this.data.id);
+          
+          // Store context in global data since switchTab doesn't support query params
+          app.globalData.addToRouteContext = {
+            action: 'addToRoute',
+            routeId: this.data.id,
+            placeType: 'Attraction'
+          };
+          
+          wx.switchTab({
+            url: '/pages/recommendation/index',
             success: () => {
-              console.log('Navigation to recommendation succeeded');
+              console.log('Switch to recommendation tab succeeded');
             },
             fail: (err) => {
               showToast('页面跳转失败');
-              console.error('Navigation failed:', err);
+              console.error('Switch tab failed:', err);
             }
           });
         } else if (res.tapIndex === 1) {
-          // Add food
-          const url = '/pages/food/index?action=addToRoute&routeId=' + this.data.id;
-          console.log('Navigating to:', url);
-          wx.navigateTo({
-            url: url,
+          // Add food - use switchTab for tabBar pages
+          console.log('Switching to food tab with routeId:', this.data.id);
+          
+          // Store context in global data since switchTab doesn't support query params
+          app.globalData.addToRouteContext = {
+            action: 'addToRoute',
+            routeId: this.data.id,
+            placeType: 'Food'
+          };
+          
+          wx.switchTab({
+            url: '/pages/food/index',
             success: () => {
-              console.log('Navigation to food succeeded');
+              console.log('Switch to food tab succeeded');
             },
             fail: (err) => {
               showToast('页面跳转失败');
-              console.error('Navigation failed:', err);
+              console.error('Switch tab failed:', err);
             }
           });
         }
