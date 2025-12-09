@@ -228,9 +228,15 @@ Page({
       showToast('已添加到路线');
       
       // Navigate back to route detail page
+      const routeId = this.data.routeId;
+      console.log('Navigating back to route detail with ID:', routeId);
+      
       setTimeout(() => {
         wx.navigateTo({
-          url: `/pages/route/detail?id=${this.data.routeId}`,
+          url: `/pages/route/detail?id=${routeId}`,
+          success: () => {
+            console.log('Navigation to route detail succeeded with ID:', routeId);
+          },
           fail: (err) => {
             console.error('Navigate to route detail failed:', err);
             // If navigation fails, try switching to route tab
