@@ -73,13 +73,28 @@ Page({
   },
 
   onAddPlace() {
+    console.log('onAddPlace called, route id:', this.data.id);
+    
+    if (!this.data.id) {
+      showToast('路线ID丢失，请重新进入页面');
+      console.error('Route ID is missing');
+      return;
+    }
+    
     wx.showActionSheet({
       itemList: ['添加景点', '添加美食'],
       success: (res) => {
+        console.log('Action sheet selected index:', res.tapIndex);
+        
         if (res.tapIndex === 0) {
           // Add attraction
+          const url = '/pages/recommendation/index?action=addToRoute&routeId=' + this.data.id;
+          console.log('Navigating to:', url);
           wx.navigateTo({
-            url: '/pages/recommendation/index?action=addToRoute&routeId=' + this.data.id,
+            url: url,
+            success: () => {
+              console.log('Navigation to recommendation succeeded');
+            },
             fail: (err) => {
               showToast('页面跳转失败');
               console.error('Navigation failed:', err);
@@ -87,8 +102,13 @@ Page({
           });
         } else if (res.tapIndex === 1) {
           // Add food
+          const url = '/pages/food/index?action=addToRoute&routeId=' + this.data.id;
+          console.log('Navigating to:', url);
           wx.navigateTo({
-            url: '/pages/food/index?action=addToRoute&routeId=' + this.data.id,
+            url: url,
+            success: () => {
+              console.log('Navigation to food succeeded');
+            },
             fail: (err) => {
               showToast('页面跳转失败');
               console.error('Navigation failed:', err);
