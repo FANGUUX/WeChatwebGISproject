@@ -35,18 +35,27 @@ Page({
   onShow() {
     // Check for addToRoute context from global data (for tabBar navigation)
     const app = getApp();
+    console.log('Food onShow - checking global data:', app.globalData.addToRouteContext);
+    
     if (app.globalData.addToRouteContext && 
         app.globalData.addToRouteContext.placeType === 'Food') {
       console.log('Found addToRoute context from global data:', app.globalData.addToRouteContext);
+      console.log('Setting action and routeId:', app.globalData.addToRouteContext.routeId);
       
       this.setData({
         action: 'addToRoute',
         routeId: app.globalData.addToRouteContext.routeId
       });
+      
+      console.log('Food page data after setData - action:', this.data.action, 'routeId:', this.data.routeId);
+      
       wx.setNavigationBarTitle({ title: '选择要添加的美食' });
       
       // Clear the context after using it
       delete app.globalData.addToRouteContext;
+    } else {
+      console.log('No addToRoute context found or wrong placeType');
+      console.log('Current action:', this.data.action, 'routeId:', this.data.routeId);
     }
   },
 
@@ -167,7 +176,9 @@ Page({
   async onAddToRoute(e) {
     const { id } = e.currentTarget.dataset;
     
-    console.log('onAddToRoute called, id:', id, 'routeId:', this.data.routeId);
+    console.log('Food onAddToRoute called, id:', id, 'routeId:', this.data.routeId, 'event:', e);
+    console.log('Current target dataset:', e.currentTarget.dataset);
+    console.log('Target dataset:', e.target.dataset);
     
     if (!this.data.routeId) {
       showToast('路线信息丢失');
@@ -176,6 +187,7 @@ Page({
     
     if (!id) {
       showToast('地点信息丢失');
+      console.error('Food ID is missing from event');
       return;
     }
 

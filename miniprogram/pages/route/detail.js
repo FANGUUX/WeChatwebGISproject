@@ -24,6 +24,15 @@ Page({
   async loadRoute() {
     showLoading();
     try {
+      console.log('loadRoute called with id:', this.data.id, 'type:', typeof this.data.id);
+      
+      if (!this.data.id || this.data.id === 'undefined' || this.data.id === '') {
+        hideLoading();
+        showToast('路线ID无效');
+        console.error('Invalid route ID:', this.data.id);
+        return;
+      }
+      
       const result = await routeApi.getDetails(this.data.id);
       const route = result.data;
       
@@ -73,11 +82,11 @@ Page({
   },
 
   onAddPlace() {
-    console.log('onAddPlace called, route id:', this.data.id);
+    console.log('onAddPlace called, route id:', this.data.id, 'type:', typeof this.data.id);
     
-    if (!this.data.id) {
+    if (!this.data.id || this.data.id === 'undefined' || this.data.id === '') {
       showToast('路线ID丢失，请重新进入页面');
-      console.error('Route ID is missing');
+      console.error('Route ID is missing or invalid:', this.data.id);
       return;
     }
     
