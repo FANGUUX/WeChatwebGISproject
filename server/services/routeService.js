@@ -7,6 +7,9 @@ const Attraction = require('../models/Attraction');
 const Food = require('../models/Food');
 const { calculateDistance } = require('../utils');
 
+// Constants
+const MIN_WAYPOINTS_FOR_PLANNED = 2;
+
 class RouteService {
   /**
    * Create a new route
@@ -66,6 +69,12 @@ class RouteService {
     // Recalculate segments if more than one waypoint
     if (route.waypoints.length > 1) {
       await this.calculateSegments(route);
+    }
+
+    // Update route status to planned if it has waypoints and is still in draft
+    if (route.status === 'draft' && route.waypoints.length >= MIN_WAYPOINTS_FOR_PLANNED) {
+      route.status = 'planned';
+      await route.save();
     }
 
     return route;

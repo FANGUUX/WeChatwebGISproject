@@ -9,13 +9,18 @@ Page({
   data: {
     id: '',
     attraction: null,
-    loading: true
+    loading: true,
+    routeId: '' // For direct add to specific route
   },
 
   onLoad(options) {
     if (options.id) {
       this.setData({ id: options.id });
       this.loadData();
+    }
+    // Handle direct add to route mode
+    if (options.routeId) {
+      this.setData({ routeId: options.routeId });
     }
   },
 
@@ -51,6 +56,26 @@ Page({
       const confirmed = await confirm('需要登录后才能添加到路线，是否前往登录？');
       if (confirmed) {
         wx.navigateTo({ url: '/pages/user/login' });
+      }
+      return;
+    }
+
+    // If routeId is provided, add directly to that route
+    if (this.data.routeId) {
+      try {
+        showLoading('添加中...');
+        await routeApi.addWaypoint(this.data.routeId, {
+          placeId: this.data.id,
+          placeType: 'Attraction'
+        });
+        hideLoading();
+        showToast('已添加到路线');
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1500);
+      } catch (error) {
+        hideLoading();
+        showToast(error.message || '添加失败');
       }
       return;
     }

@@ -2,7 +2,7 @@
  * Recommendation List Page
  * 推荐列表页面
  */
-const { recommendationApi } = require('../../services/api');
+const { recommendationApi, routeApi } = require('../../services/api');
 const { formatDistance, getCategoryName, showToast, showLoading, hideLoading } = require('../../utils/util');
 
 Page({
@@ -14,7 +14,10 @@ Page({
     loading: false,
     hasMore: true,
     page: 1,
-    focusSearch: false
+    focusSearch: false,
+    // Add to route mode
+    action: '',
+    routeId: ''
   },
 
   onLoad(options) {
@@ -24,7 +27,33 @@ Page({
     if (options.focus === 'search') {
       this.setData({ focusSearch: true });
     }
+    // Handle add to route mode from URL params (non-tabBar navigation)
+    if (options.action === 'addToRoute' && options.routeId) {
+      this.setData({
+        action: 'addToRoute',
+        routeId: options.routeId
+      });
+      wx.setNavigationBarTitle({ title: '选择要添加的景点' });
+    }
     this.getLocation();
+  },
+
+  onShow() {
+    // Check for addToRoute context from global data (for tabBar navigation)
+    const app = getApp();
+    if (app.globalData.addToRouteContext && 
+        app.globalData.addToRouteContext.placeType === 'Attraction') {
+      console.log('Found addToRoute context from global data:', app.globalData.addToRouteContext);
+      
+      this.setData({
+        action: 'addToRoute',
+        routeId: app.globalData.addToRouteContext.routeId
+      });
+      wx.setNavigationBarTitle({ title: '选择要添加的景点' });
+      
+      // Clear the context after using it
+      delete app.globalData.addToRouteContext;
+    }
   },
 
   onPullDownRefresh() {
@@ -162,8 +191,63 @@ Page({
 
   onItemTap(e) {
     const { id } = e.currentTarget.dataset;
+    
+    // Prevent navigation to detail view when in add-to-route mode; add button handles the action
+    if (this.data.action === 'addToRoute') {
+      return;
+    }
+    
     wx.navigateTo({
       url: `/pages/recommendation/detail?id=${id}`
     });
+  },
+
+  async onAddToRoute(e) {
+    const { id } = e.currentTarget.dataset;
+    
+    console.log('onAddToRoute called, id:', id, 'routeId:', this.data.routeId);
+    
+    if (!this.data.routeId) {
+      showToast('路线信息丢失');
+      return;
+    }
+    
+    if (!id) {
+      showToast('地点信息丢失');
+      return;
+    }
+
+    try {
+      showLoading('添加中...');
+      const result = await routeApi.addWaypoint(this.data.routeId, {
+        placeId: id,
+        placeType: 'Attraction'
+      });
+      console.log('Waypoint added successfully:', result);
+      hideLoading();
+      showToast('已添加到路线');
+      
+      // Navigate back to route detail page
+      const routeId = this.data.routeId;
+      console.log('Navigating back to route detail with ID:', routeId);
+      
+      setTimeout(() => {
+        wx.navigateTo({
+          url: `/pages/route/detail?id=${routeId}`,
+          success: () => {
+            console.log('Navigation to route detail succeeded with ID:', routeId);
+          },
+          fail: (err) => {
+            console.error('Navigate to route detail failed:', err);
+            // If navigation fails, try switching to route tab
+            wx.switchTab({ url: '/pages/route/index' });
+          }
+        });
+      }, 1500);
+    } catch (error) {
+      console.error('Add waypoint error:', error);
+      hideLoading();
+      showToast(error.message || '添加失败');
+    }
   }
 });

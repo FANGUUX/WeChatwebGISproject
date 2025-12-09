@@ -4,6 +4,19 @@
   background-color: #f5f5f5;
 }
 
+/* Mode Header */
+.mode-header {
+  padding: 24rpx 32rpx;
+  background-color: #ff6b35;
+  color: #fff;
+  text-align: center;
+}
+
+.mode-title {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
 /* Search Bar */
 .search-bar {
   display: flex;
@@ -76,6 +89,7 @@
 
 .restaurant-card {
   display: flex;
+  position: relative;
   background-color: #fff;
   border-radius: 16rpx;
   overflow: hidden;
@@ -153,6 +167,20 @@
   font-size: 20rpx;
   color: #999;
   margin-right: 16rpx;
+}
+
+/* Add to Route Button */
+.add-button {
+  position: absolute;
+  top: 16rpx;
+  right: 16rpx;
+  padding: 12rpx 24rpx;
+  background-color: #ff6b35;
+  color: #fff;
+  font-size: 24rpx;
+  border-radius: 32rpx;
+  box-shadow: 0 4rpx 12rpx rgba(255, 107, 53, 0.3);
+  z-index: 10;
 }
 
 /* Empty State */

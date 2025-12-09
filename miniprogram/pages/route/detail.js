@@ -24,6 +24,15 @@ Page({
   async loadRoute() {
     showLoading();
     try {
+      console.log('loadRoute called with id:', this.data.id, 'type:', typeof this.data.id);
+      
+      if (!this.data.id || this.data.id === 'undefined' || this.data.id === '') {
+        hideLoading();
+        showToast('路线ID无效');
+        console.error('Invalid route ID:', this.data.id);
+        return;
+      }
+      
       const result = await routeApi.getDetails(this.data.id);
       const route = result.data;
       
@@ -73,8 +82,69 @@ Page({
   },
 
   onAddPlace() {
-    wx.navigateTo({
-      url: '/pages/recommendation/index?action=addToRoute&routeId=' + this.data.id
+    console.log('onAddPlace called, route id:', this.data.id, 'type:', typeof this.data.id);
+    
+    if (!this.data.id || this.data.id === 'undefined' || this.data.id === '') {
+      showToast('路线ID丢失，请重新进入页面');
+      console.error('Route ID is missing or invalid:', this.data.id);
+      return;
+    }
+    
+    wx.showActionSheet({
+      itemList: ['添加景点', '添加美食'],
+      success: (res) => {
+        console.log('Action sheet selected index:', res.tapIndex);
+        
+        const app = getApp();
+        
+        if (res.tapIndex === 0) {
+          // Add attraction - use switchTab for tabBar pages
+          console.log('Switching to recommendation tab with routeId:', this.data.id);
+          
+          // Store context in global data since switchTab doesn't support query params
+          app.globalData.addToRouteContext = {
+            action: 'addToRoute',
+            routeId: this.data.id,
+            placeType: 'Attraction'
+          };
+          
+          wx.switchTab({
+            url: '/pages/recommendation/index',
+            success: () => {
+              console.log('Switch to recommendation tab succeeded');
+            },
+            fail: (err) => {
+              showToast('页面跳转失败');
+              console.error('Switch tab failed:', err);
+            }
+          });
+        } else if (res.tapIndex === 1) {
+          // Add food - use switchTab for tabBar pages
+          console.log('Switching to food tab with routeId:', this.data.id);
+          
+          // Store context in global data since switchTab doesn't support query params
+          app.globalData.addToRouteContext = {
+            action: 'addToRoute',
+            routeId: this.data.id,
+            placeType: 'Food'
+          };
+          
+          wx.switchTab({
+            url: '/pages/food/index',
+            success: () => {
+              console.log('Switch to food tab succeeded');
+            },
+            fail: (err) => {
+              showToast('页面跳转失败');
+              console.error('Switch tab failed:', err);
+            }
+          });
+        }
+      },
+      fail: (err) => {
+        showToast('操作失败');
+        console.error('Action sheet failed:', err);
+      }
     });
   },
 

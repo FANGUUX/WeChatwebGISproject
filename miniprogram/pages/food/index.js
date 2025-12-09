@@ -2,7 +2,7 @@
  * Food Discovery Page
  * 美食发现页面
  */
-const { foodApi } = require('../../services/api');
+const { foodApi, routeApi } = require('../../services/api');
 const { formatDistance, getCuisineName, showToast, showLoading, hideLoading } = require('../../utils/util');
 
 Page({
@@ -12,12 +12,51 @@ Page({
     selectedCuisine: '',
     keyword: '',
     location: null,
-    loading: false
+    loading: false,
+    // Add to route mode
+    action: '',
+    routeId: ''
   },
 
-  onLoad() {
+  onLoad(options) {
     this.loadCuisines();
     this.getLocation();
+    
+    // Handle add to route mode from URL params (non-tabBar navigation)
+    if (options.action === 'addToRoute' && options.routeId) {
+      this.setData({
+        action: 'addToRoute',
+        routeId: options.routeId
+      });
+      wx.setNavigationBarTitle({ title: '选择要添加的美食' });
+    }
+  },
+
+  onShow() {
+    // Check for addToRoute context from global data (for tabBar navigation)
+    const app = getApp();
+    console.log('Food onShow - checking global data:', app.globalData.addToRouteContext);
+    
+    if (app.globalData.addToRouteContext && 
+        app.globalData.addToRouteContext.placeType === 'Food') {
+      console.log('Found addToRoute context from global data:', app.globalData.addToRouteContext);
+      console.log('Setting action and routeId:', app.globalData.addToRouteContext.routeId);
+      
+      this.setData({
+        action: 'addToRoute',
+        routeId: app.globalData.addToRouteContext.routeId
+      });
+      
+      console.log('Food page data after setData - action:', this.data.action, 'routeId:', this.data.routeId);
+      
+      wx.setNavigationBarTitle({ title: '选择要添加的美食' });
+      
+      // Clear the context after using it
+      delete app.globalData.addToRouteContext;
+    } else {
+      console.log('No addToRoute context found or wrong placeType');
+      console.log('Current action:', this.data.action, 'routeId:', this.data.routeId);
+    }
   },
 
   onPullDownRefresh() {
@@ -94,6 +133,7 @@ Page({
       this.setData({
         restaurants: result.data.restaurants.map(r => ({
           ...r,
+          id: r.id || r._id,  // Ensure id field exists (MongoDB returns _id)
           formattedDistance: formatDistance(r.distance)
         })),
         loading: false
@@ -123,8 +163,66 @@ Page({
 
   onRestaurantTap(e) {
     const { id } = e.currentTarget.dataset;
+    
+    // Prevent navigation to detail view when in add-to-route mode; add button handles the action
+    if (this.data.action === 'addToRoute') {
+      return;
+    }
+    
     wx.navigateTo({
       url: `/pages/food/detail?id=${id}`
     });
+  },
+
+  async onAddToRoute(e) {
+    const { id } = e.currentTarget.dataset;
+    
+    console.log('Food onAddToRoute called, id:', id, 'routeId:', this.data.routeId, 'event:', e);
+    console.log('Current target dataset:', e.currentTarget.dataset);
+    console.log('Target dataset:', e.target.dataset);
+    
+    if (!this.data.routeId) {
+      showToast('路线信息丢失');
+      return;
+    }
+    
+    if (!id) {
+      showToast('地点信息丢失');
+      console.error('Food ID is missing from event');
+      return;
+    }
+
+    try {
+      showLoading('添加中...');
+      const result = await routeApi.addWaypoint(this.data.routeId, {
+        placeId: id,
+        placeType: 'Food'
+      });
+      console.log('Waypoint added successfully:', result);
+      hideLoading();
+      showToast('已添加到路线');
+      
+      // Navigate back to route detail page
+      const routeId = this.data.routeId;
+      console.log('Navigating back to route detail with ID:', routeId);
+      
+      setTimeout(() => {
+        wx.navigateTo({
+          url: `/pages/route/detail?id=${routeId}`,
+          success: () => {
+            console.log('Navigation to route detail succeeded with ID:', routeId);
+          },
+          fail: (err) => {
+            console.error('Navigate to route detail failed:', err);
+            // If navigation fails, try switching to route tab
+            wx.switchTab({ url: '/pages/route/index' });
+          }
+        });
+      }, 1500);
+    } catch (error) {
+      console.error('Add waypoint error:', error);
+      hideLoading();
+      showToast(error.message || '添加失败');
+    }
   }
 });
