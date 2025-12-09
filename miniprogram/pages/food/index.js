@@ -133,6 +133,7 @@ Page({
       this.setData({
         restaurants: result.data.restaurants.map(r => ({
           ...r,
+          id: r.id || r._id,  // Ensure id field exists (MongoDB returns _id)
           formattedDistance: formatDistance(r.distance)
         })),
         loading: false
