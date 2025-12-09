@@ -79,14 +79,26 @@ Page({
         if (res.tapIndex === 0) {
           // Add attraction
           wx.navigateTo({
-            url: '/pages/recommendation/index?action=addToRoute&routeId=' + this.data.id
+            url: '/pages/recommendation/index?action=addToRoute&routeId=' + this.data.id,
+            fail: (err) => {
+              showToast('页面跳转失败');
+              console.error('Navigation failed:', err);
+            }
           });
         } else if (res.tapIndex === 1) {
           // Add food
           wx.navigateTo({
-            url: '/pages/food/index?action=addToRoute&routeId=' + this.data.id
+            url: '/pages/food/index?action=addToRoute&routeId=' + this.data.id,
+            fail: (err) => {
+              showToast('页面跳转失败');
+              console.error('Navigation failed:', err);
+            }
           });
         }
+      },
+      fail: (err) => {
+        showToast('操作失败');
+        console.error('Action sheet failed:', err);
       }
     });
   },

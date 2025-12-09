@@ -149,17 +149,25 @@ Page({
   async onAddToRoute(e) {
     const { id } = e.currentTarget.dataset;
     
+    console.log('onAddToRoute called, id:', id, 'routeId:', this.data.routeId);
+    
     if (!this.data.routeId) {
       showToast('路线信息丢失');
+      return;
+    }
+    
+    if (!id) {
+      showToast('地点信息丢失');
       return;
     }
 
     try {
       showLoading('添加中...');
-      await routeApi.addWaypoint(this.data.routeId, {
+      const result = await routeApi.addWaypoint(this.data.routeId, {
         placeId: id,
         placeType: 'Food'
       });
+      console.log('Waypoint added successfully:', result);
       hideLoading();
       showToast('已添加到路线');
       
@@ -167,6 +175,7 @@ Page({
         wx.navigateBack();
       }, 1500);
     } catch (error) {
+      console.error('Add waypoint error:', error);
       hideLoading();
       showToast(error.message || '添加失败');
     }
